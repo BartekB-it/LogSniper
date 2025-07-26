@@ -1,0 +1,20 @@
+Jul 24 22:10:01 server sshd[1234]: Failed password for user alice from 192.168.1.50 port 51412 ssh2
+Jul 24 22:10:05 server sshd[1235]: Failed password for user bob from 10.0.0.3 port 51413 ssh2
+Jul 24 22:10:10 server sshd[1236]: Accepted password for user alice from 10.0.0.3 port 51414 ssh2
+Jul 24 22:10:15 server sshd[1237]: Failed password for user admin from 192.168.1.50 port 51415 ssh2
+Jul 24 22:10:20 server sshd[1238]: Failed password for user admin from 192.168.1.50 port 51416 ssh2
+Jul 24 22:10:25 server sshd[1239]: Failed password for user admin from 192.168.1.50 port 51417 ssh2
+Jul 24 22:10:30 server sshd[1240]: Failed password for user admin from 192.168.1.50 port 51418 ssh2
+Jul 24 22:10:35 server sshd[1241]: Accepted password for user carol from 10.0.0.4 port 51419 ssh2
+Jul 24 22:10:40 server sudo: pam_unix(sudo:session): session opened for user root by carol(uid=0)
+Jul 24 22:10:45 server sshd[1243]: Failed password for invalid user guest from 10.0.0.5 port 51420 ssh2
+Jul 24 22:10:50 server sshd[1244]: Accepted password for user dave from 10.0.0.6 port 51421 ssh2
+Jul 24 22:10:55 server sshd[1245]: Failed password for user eve from 10.0.0.7 port 51422 ssh2
+Jul 24 22:11:00 server sshd[1246]: sudo: pam_unix(sudo:session): session opened for user root by dave(uid=0)
+Jul 24 22:11:05 server sshd[1247]: Failed password for user frank from 10.0.0.8 port 51423 ssh2
+Jul 24 22:11:10 server sshd[1248]: Accepted password for user grace from 10.0.0.9 port 51424 ssh2
+Jul 24 22:11:15 server sshd[1249]: Failed password for user heidi from 10.0.0.10 port 51425 ssh2
+Jul 24 22:11:20 server sshd[1250]: Failed password for user ivan from 10.0.0.11 port 51426 ssh2
+Jul 24 22:11:25 server sshd[1251]: Accepted password for user judy from 10.0.0.12 port 51427 ssh2
+Jul 24 22:11:30 server sshd[1252]: sudo: pam_unix(sudo:session): session closed for user root
+Jul 24 22:11:35 server sshd[1253]: Failed password for user mallory from 10.0.0.13 port 51428 ssh2
