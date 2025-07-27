@@ -1,30 +1,57 @@
 # LogSniper
 
-**LogSniper** is a simple system log parser designed to classify potential security threats such as failed logins, brute-force attempts, and administrative privilege usage.
+**LogSniper** is a lightweight security log parser built to detect and classify potential threats in system and web logs - such as failed logins, brute-force attempts, suspicious HTTP scanning, and privilege escalations.
 
 ## Project Goal
 
-The goal of this project is to build a tool that:
-- Loads and parses system logs (e.g., 'auth.log', 'syslog', 'access.log')
+The main goal of this project is to develop a tool that:
+
+- Parses system and web logs (`auth.log`, `syslog`, `access.log`)
 - Detects and classifies selected security events
-- Can serve as a foundation for future development into a honeypot, SIEM, or a threat hunting data source
+- Lays a foundation for future development into:
+  - a honeypot,
+  - a lightweight SIEM,
+  - or a data source for threat hunting and blue teaming.
 
 ## How to Use
 
+Parse authentication logs
 python logsniper_auth.py logs/auth.log
-or
-python logsniper_old.py logs/apache.log
 
-The results for auth.log will be saved in results.csv in the same folder
+Parse web server access logs
+python logsniper_old.py logs/apache_shady.log
 
-## Supported Events (MVP)
+Results:
 
-| Event Type            | Description                                 | MITRE ID  |
-| --------------------- | ------------------------------------------- | --------- |
-| FAILED_LOGIN          | Failed login attempts                       | T1110.001 |
-| BRUTE_FORCE_ATTEMPT   | 5 failed attempts from the same IP          | T1110     |
-| SUDO_USAGE            | Usage of administrative privileges (`sudo`) | T1548     |
-| SUCCESSFUL_LOGIN      | Successful login                            | T1078     |
+auth.log → results.csv
+
+access.log → suspicious_entries.json
+
+## Supported Events
+
+# System Log Events (auth.log)
+
+| Event Type            | Description                             | MITRE ATT\&CK ID |
+| --------------------- | --------------------------------------- | ---------------- |
+| FAILED\_LOGIN         | Failed login attempt                    | T1110.001        |
+| BRUTE\_FORCE\_ATTEMPT | 5+ failed logins from same IP           | T1110            |
+| SUDO\_USAGE           | Use of administrative privileges (sudo) | T1548            |
+| SUCCESSFUL\_LOGIN     | Successful login                        | T1078            |
+
+# Web Log Events (access.log)
+
+| Event Type                           | Description                                          |
+| ------------------------------------ | ---------------------------------------------------- |
+| SQLMAP\_SCANNER                      | User-Agent contains `sqlmap`                         |
+| CURL\_SCANNER                        | User-Agent is `curl`, indicating automation          |
+| NIKTO\_SCANNER                       | Known Nikto scan pattern                             |
+| STRANGE\_METHOD                      | Suspicious HTTP method (e.g., OPTIONS, HEAD, DELETE) |
+| POTENTIAL\_BRUTEFORCE                | Repeated 403s to `/login`                            |
+| POTENTIAL\_404\_FLOOD                | 20+ 404s from same IP                                |
+| POTENTIAL\_SCAN                      | Multiple IPs probing same path                       |
+| POTENTIAL\_SETUP\_CGI\_SCANNER       | Access to `setup.cgi`                                |
+| POTENTIAL\_CONFIG\_PHP\_SCANNER      | Access to `config.php`                               |
+| POTENTIAL\_SUSPICIOUS\_PATH\_SCANNER | Access to `/hidden` or similar paths                 |
 
 ## Project Structure
 
@@ -44,7 +71,7 @@ Parsed into:
 [FAILED_LOGIN] Time: Jul 24 22:10:01, IP: 192.168.1.50, User: alice
 
 
-## Inspirations
+## Detection Sources / Inspirations
 
 - MITRE ATT&CK
 - Sigma Rules
@@ -54,7 +81,7 @@ Parsed into:
 
 ## Author
 
-Name: Bartłomiej Biskupiak
+Bartłomiej Biskupiak
 This is part of my blue team / cybersecurity learning path.
 
 ## Project Status
@@ -65,11 +92,13 @@ This is part of my blue team / cybersecurity learning path.
 
 - Log parser for auth.log - DONE
 
-- Support for access.log and web logs - DONE
+- Basic web log analysis from access.log - DONE
 
-- Detection rules for unusual login hours
+- Advanced detection rules (work in progress)
 
-- SQLite or Elastic integration (optional)
+- SQLite or Elastic integration (optional, later)
+
+- Weekly updates planned
 
 ## Contributing
 
