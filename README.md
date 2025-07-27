@@ -11,7 +11,6 @@ The goal of this project is to build a tool that:
 
 ## How to Use
 
-```bash
 python logsniper_auth.py logs/auth.log
 or
 python logsniper_old.py logs/apache.log
@@ -76,3 +75,6 @@ This is part of my blue team / cybersecurity learning path.
 
 Want to help? Open an issue or submit a pull request!
 This is an educational project — all feedback is welcome.
+
+This project is part of my public cybersecurity portfolio.
+Started: July 2025
