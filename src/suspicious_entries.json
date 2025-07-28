@@ -243,6 +243,24 @@
     "classification": "POTENTIAL_API_MANIPULATION"
   },
   {
+    "user_agent": "PostmanRuntime/7.26.8",
+    "path": "/api/",
+    "method": "OPTIONS",
+    "status": "204",
+    "ip": "198.51.100.22",
+    "date": "[27/Jul/2025:09:40:29 +0000]",
+    "classification": "STRANGE_METHOD"
+  },
+  {
+    "user_agent": "Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)",
+    "path": "/health",
+    "method": "HEAD",
+    "status": "200",
+    "ip": "203.0.113.42",
+    "date": "[27/Jul/2025:09:45:12 +0000]",
+    "classification": "STRANGE_METHOD"
+  },
+  {
     "user_agent": "sqlmap/1.4.6",
     "path": "/login",
     "method": "GET",
