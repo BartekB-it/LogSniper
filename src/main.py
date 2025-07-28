@@ -17,16 +17,13 @@ with open ("../logs/apache_shady.log", "r") as file:
 
         url_ip_map[log_entry["path"]].add(log_entry["ip"])
 
-with open("../logs/apache_shady.log", "r") as file:
-    for line in file:
-        log_entry = parse_log_line(line)
         classification = classify_access_log(log_entry)
         log_entry["classification"] = classification
 
         if classification != "NORMAL":
             classified_entries.append(log_entry)
 
-        print(f'[{classification}] IP: {log_entry["ip"]}, Date: {log_entry["date"]}, Method: {log_entry["method"]}, Path: {log_entry["path"]} Status:{log_entry["status"]} User Agent: {log_entry["user_agent"]}')
+        print(f'[{classification}] IP: {log_entry["ip"]}, Date: {log_entry["date"]}, Method: {log_entry["method"]}, Path: {log_entry["path"]} Status: {log_entry["status"]} User Agent: {log_entry["user_agent"]}')
 
 with open("suspicious_entries.json", "w") as f:
     json.dump(classified_entries, f, indent=2)
