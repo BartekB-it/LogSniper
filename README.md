@@ -15,21 +15,33 @@ The main goal of this project is to develop a tool that:
 
 ## How to Use
 
-Parse authentication logs
-python logsniper_auth.py logs/auth.log
+Run the main program:
+```bash
+python main.py
+```
+Upon running, the program will prompt you to choose which log type to analyze:
 
-Parse web server access logs
-python logsniper_old.py logs/apache_shady.log
+auth — to parse authentication logs (e.g., logs/auth.log)
 
-Results:
+access — to parse web server access logs (e.g., logs/access.log)
 
-auth.log → results.csv
+The program then processes the corresponding log files from the logs/ folder and saves the parsed results as JSON files in the results/ folder (this way it saves JSON files only for access.log).
 
-access.log → suspicious_entries.json
+## Automated Testing with test_runner.py
+
+There is also a test_runner.py script designed to automate testing of the parsers. It works as follows:
+
+It automatically scans all log files placed in the test_logs/ directory.
+
+For each test log file, it runs the appropriate parser.
+
+The results are saved as JSON files in the results/ directory for easy verification.
+
+This helps ensure that parser updates or new detection rules maintain expected behavior through automated regression tests.
 
 ## Supported Events
 
-# System Log Events (auth.log)
+### System Log Events (auth.log)
 
 | Event Type            | Description                             | MITRE ATT\&CK ID |
 | --------------------- | --------------------------------------- | ---------------- |
@@ -38,7 +50,7 @@ access.log → suspicious_entries.json
 | SUDO\_USAGE           | Use of administrative privileges (sudo) | T1548            |
 | SUCCESSFUL\_LOGIN     | Successful login                        | T1078            |
 
-# Web Log Events (access.log)
+### Web Log Events (access.log)
 
 | Event Type                           | Description                                          |
 | ------------------------------------ | ---------------------------------------------------- |
@@ -54,22 +66,24 @@ access.log → suspicious_entries.json
 | POTENTIAL\_SUSPICIOUS\_PATH\_SCANNER | Access to `/hidden` or similar paths                 |
 
 ## Project Structure
-
+```bash
 LogSniper/
 │
-├── logs/             # Sample log files for testing
-├── src/              # Source code (parser, classifier, etc.)
-├── doc/              # Notes, diagrams, sketches
-├── README.md         # Project documentation
-
+├── logs/               # Sample log files for testing
+├── results/            # Output files (JSON results)
+├── src/                # Source code (main.py, analyzers, test_runner.py, etc.)
+├── test_logs/          # Test log files used by test_runner.py
+├── doc/                # Notes, diagrams, sketches
+├── README.md           # Project documentation
+```
 ## Sample Input Log
-
+```bash
 Jul 24 22:10:01 server sshd[1234]: Failed password for user alice from 192.168.1.50 port 51412 ssh2
-
+```
 Parsed into:
-
+```bash
 [FAILED_LOGIN] Time: Jul 24 22:10:01, IP: 192.168.1.50, User: alice
-
+```
 
 ## Detection Sources / Inspirations
 
