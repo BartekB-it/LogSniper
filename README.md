@@ -114,6 +114,18 @@ This is part of my blue team / cybersecurity learning path.
 
 - Weekly updates planned
 
+## TODO: EVTX Brute-force Detection (T1110)
+
+[] Validate detection logic for 4625/5379 events (currently tested only with synthetic events).
+
+[] Confirm time window (>=3 failed logins within 60 seconds) works with real EVTX logs.
+
+[] Add proper EVTX sample logs for testing (Security.evtx).
+
+[] Integrate detection with test_runner.py for automated testing.
+
+[] Ensure suspicious_events output is clean JSON (timestamps already converted to ISO format).
+
 ## Contributing
 
 Want to help? Open an issue or submit a pull request!
