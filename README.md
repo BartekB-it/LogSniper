@@ -68,12 +68,13 @@ This helps ensure that parser updates or new detection rules maintain expected b
 | POTENTIAL\_SUSPICIOUS\_PATH\_SCANNER | Access to `/hidden` or similar paths                 |
 
 ### Windows Event Logs (EVTX)
-
-| Event Type                    | Description                                                                              | MITRE ATT\&CK ID |
-| ----------------------------- | ---------------------------------------------------------------------------------------- | ---------------- |
-| BRUTE\_FORCE\_ATTEMPT         | 3+ failed logins within 60 seconds from same IP/account (4625/5379)                      | T1110            |
-| SUSPICIOUS\_SERVICE\_CREATION | Service creation (4697/7045) with executable path in unusual locations (AppData, Public) | T1543.003        |
-
+```bash
+| Event Type                                | Description                                                                                  | MITRE ATT&CK ID |
+| ----------------------------------------- | -------------------------------------------------------------------------------------------- | ---------------- |
+| BRUTE_FORCE_FAILED_LOGINS                 | 3+ failed login attempts (4625/5379) from same IP/account within 60 seconds                  | T1110            |
+| CREATE_OR_MODIFY_SYSTEM_PROCESS           | Creation or modification of a Windows service (4697/7045) in unusual paths (e.g., AppData)   | T1543.003        |
+| ABUSE_ELEVATION_CONTROL_MECHANISM         | Suspicious process creation (4688) involving `cmd.exe`, `services.exe`, or `rundll32.exe` with specific arguments (e.g., `echo`, `\\pipe\\`, `,a /p:`) | T1548            |
+```
 ## Project Structure
 ```bash
 LogSniper/
