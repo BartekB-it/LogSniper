@@ -25,6 +25,8 @@ auth — to parse authentication logs (e.g., logs/auth.log)
 
 access — to parse web server access logs (e.g., logs/access.log)
 
+evtx — to parse Windows Event Logs (e.g., Security.evtx)
+
 The program then processes the corresponding log files from the logs/ folder and saves the parsed results as JSON files in the results/ folder (this way it saves JSON files only for access.log).
 
 ## Automated Testing with test_runner.py
@@ -65,15 +67,24 @@ This helps ensure that parser updates or new detection rules maintain expected b
 | POTENTIAL\_CONFIG\_PHP\_SCANNER      | Access to `config.php`                               |
 | POTENTIAL\_SUSPICIOUS\_PATH\_SCANNER | Access to `/hidden` or similar paths                 |
 
+### Windows Event Logs (EVTX)
+
+| Event Type                    | Description                                                                              | MITRE ATT\&CK ID |
+| ----------------------------- | ---------------------------------------------------------------------------------------- | ---------------- |
+| BRUTE\_FORCE\_ATTEMPT         | 3+ failed logins within 60 seconds from same IP/account (4625/5379)                      | T1110            |
+| SUSPICIOUS\_SERVICE\_CREATION | Service creation (4697/7045) with executable path in unusual locations (AppData, Public) | T1543.003        |
+
 ## Project Structure
 ```bash
 LogSniper/
 │
 ├── logs/               # Sample log files for testing
 ├── results/            # Output files (JSON results)
-├── src/                # Source code (main.py, analyzers, test_runner.py, etc.)
+├── src/                # Source code (analyzers, parsers, rules etc.)
 ├── test_logs/          # Test log files used by test_runner.py
 ├── doc/                # Notes, diagrams, sketches
+├── main.py             # Main program entry point
+├── test_runner.py      # Automated testing script
 ├── README.md           # Project documentation
 ```
 ## Sample Input Log
@@ -104,11 +115,11 @@ This is part of my blue team / cybersecurity learning path.
 
 ## Roadmap Components
 
-- Log parser for auth.log - DONE
+- Log parser for auth.log - **DONE**
 
-- Basic web log analysis from access.log - DONE
+- Basic web log analysis from access.log - **DONE**
 
-- Advanced detection rules (work in progress)
+- Advanced detection rules - **In progress**
 
 - SQLite or Elastic integration (optional, later)
 
