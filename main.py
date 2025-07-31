@@ -6,12 +6,32 @@ from src.analyzers.analyzer_xml import generate_report_xml
 log_type = input("Choose log type (access/auth/evtx): ")
 
 if log_type == "access":
-    analyze_access_log("logs/apache_shady.log")
+    try:
+        analyze_access_log("../../test_logs/apache_shady.log")
+    except FileNotFoundError:
+        print("The specified file was not found.")
+    except Exception as e:
+        print(f"An error occured: {e}")
 elif log_type == "auth":
-    analyze_auth_log("logs/auth.log")
+    try:
+        analyze_auth_log("../../test_logs/auth.log")
+    except FileNotFoundError:
+        print("The specified file was not found.")
+    except Exception as e:
+        print(f"An error occured: {e}")
 elif log_type == "evtx":
-    generate_report()
+    try:
+        generate_report()
+    except FileNotFoundError:
+        print("The specified file was not found.")
+    except Exception as e:
+        print(f"An error occured: {e}")
 elif log_type == "xml":
-    generate_report_xml()
+    try:
+        generate_report_xml()
+    except FileNotFoundError:
+        print("The specified file was not found.")
+    except Exception as e:
+        print(f"An error occured: {e}")
 else:
     print("Unknown log type.")

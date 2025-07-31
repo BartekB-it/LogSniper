@@ -6,10 +6,11 @@ from src.rules.rules_evtx import classify_evtx_log, suspicious_events
 
 os.chdir(os.path.dirname(__file__))
 
-with Evtx("../../test_logs/CA_4624_4625_LogonType2_LogonProc_chrome.evtx") as log:
+with Evtx("../../test_logs/testt.evtx") as log:
     for record in log.records():
         xml = record.xml()
         data = xmltodict.parse(xml)
+        print("Parsed Event:", data)
         classify_evtx_log(data)
 
 def generate_report():
