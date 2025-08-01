@@ -4,58 +4,32 @@ from datetime import datetime, timedelta
 suspicious_events = []
 failed_attempts = {}
 
-def extract_field_from_message(message, field_name):
-    if message:
-        print(f"Looking for {field_name} in message:", message)
-        pattern = re.compile(rf"{re.escape(field_name)}=([^\s,]+)")
-        match = pattern.search(message)
-        if match:
-            print(f"Found {field_name} in message:", match.group(1))
-            return match.group(1)  
-        pattern_alt = re.compile(rf"{re.escape(field_name)} '([^']+)'")
-        match_alt = pattern_alt.search(message)
-        if match_alt:
-            return match_alt.group(1)  
-    return None
-
 def extract_field(data_list, field_name):
     if isinstance(data_list, list):    
         for entry in data_list:
-            if isinstance(entry, dict) and "@Name" in entry and entry["@Name"] == field_name:
-                return entry.get("#text")
-    
-    if isinstance(data_list, dict):
-
-        if 'EventData' in data_list:
-            data = data_list["EventData"].get("Data", "")
-            if data:
-                return extract_field_from_message(data, field_name)
-        
-        if 'Message' in data_list:
-            return extract_field_from_message(data_list["Message"], field_name)
-    if isinstance(data_list, str):
-        return extract_field_from_message(data_list,field_name)
+            if isinstance(entry, dict): 
+                if "@Name" in entry and entry["@Name"] == field_name:
+                    return entry.get("#text")
+                result = extract_field(entry, field_name)
+                if result:
+                    return result
+                
+    elif isinstance(data_list, dict):
+        for key, value in data_list.items():
+            if isinstance(value, (dict, list)):
+                result = extract_field(value, field_name)
+                if result:
+                    return result
     
     return None
 
 def classify_evtx_log(event):
-    print("Event data:", event)
     Brute_Force_check(event)
     Create_or_Modify_System_Process_check(event)
     Abuse_Elevation_Control_Mechanism_check(event)
 
 def Brute_Force_check(event):
-    print("Brute Force check event:", event)
 
-    if "EventData" not in event["Event"]:
-        print("EventData not found, checking Message.")
-        ip = extract_field(event["Event"], "IpAddress")
-        account = extract_field(event["Event"], "TargetUserName")
-        
-        if not ip or not account:
-            print("Neither IpAddress nor TargetUserName found.")
-            return
-    
     timestamp_str = event["Event"]["System"]["TimeCreated"]["@SystemTime"]
     timestamp = datetime.strptime(timestamp_str, "%Y-%m-%d %H:%M:%S.%f%z")
 
@@ -81,9 +55,9 @@ def Brute_Force_check(event):
         if(timestamp - t).total_seconds() <= 60
     ]
 
-    if len(failed_attempts[key]) >= 3:
+    if len(failed_attempts[key]) >= 5:
         suspicious_events_step = {
-            "detection": "Brute Force (T1110)",
+            "detection": "Brute Force Attack (T1110) - Multiple Failed Logins",
             "ip": ip,
             "account": account,
             "attempts": len(failed_attempts[key]),
