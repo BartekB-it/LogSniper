@@ -31,8 +31,5 @@ def analyze_access_log(log_path):
         json.dump(classified_entries, f, indent=2)
 
     print(f"\nFound {len(classified_entries)} classified entries. Saved to suspicious_entries.json")
-    print("\n--- STATS ---")
-    print(f"Sum of unique IPs: {len(ip_404_counter)}")
-    print(f"Sum of unique paths: {len(url_ip_map)}")
 
     return classified_entries
