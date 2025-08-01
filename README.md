@@ -33,6 +33,12 @@ evtx — to parse Windows Event Logs (e.g., Security.evtx)
 
 After processing, results are saved in the results/ folder as JSON files.
 
+## Demo
+
+Here's a quick demo of **LogSniper** in action:
+
+![LogSniper Demo](assets/LogSniper.gif)
+
 ## Automated Testing with test_runner.py
 
 The test_runner.py script automates the testing of parsers for various log files. Simply place your log files in the test_logs/ folder, and the script will process each file, storing the results as JSON files in the results/ folder.
@@ -130,7 +136,7 @@ This is part of my blue team / cybersecurity learning path.
 
 Want to help? Open an issue or submit a pull request!
 
-This is an educational project — all feedback is welcome.
+This is an educational project - all feedback is welcome.
 
 This project is part of my public cybersecurity portfolio.
 
