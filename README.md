@@ -4,42 +4,42 @@
 
 ## Project Goal
 
-The main goal of this project is to develop a tool that:
+The primary objective of **LogSniper** is to provide a practical tool to enhance cybersecurity by parsing and analyzing system and web logs for potential security threats. This tool lays the foundation for the following:
 
-- Parses system and web logs (`auth.log`, `syslog`, `access.log`)
-- Detects and classifies selected security events
-- Lays a foundation for future development into:
-  - a honeypot,
-  - a lightweight SIEM,
-  - or a data source for threat hunting and blue teaming.
+- **Building a Blue Team / SOC toolset**
+- Future expansion into a **lightweight SIEM** or a **honeypot**
+- **Threat hunting** by identifying security events like failed logins, suspicious scanning, and privilege escalation
 
 ## How to Use
 
-Run the main program:
+1. **Install Dependencies**:
+
+```bash
+pip install -r requirements.txt
+```
+2. **Run the main program**:
 ```bash
 python main.py
 ```
 Upon running, the program will prompt you to choose which log type to analyze:
 
-auth — to parse authentication logs (e.g., logs/auth.log)
+auth — to parse authentication logs (e.g., auth.log)
 
-access — to parse web server access logs (e.g., logs/access.log)
+access — to parse web server access logs (e.g., access.log)
 
 evtx — to parse Windows Event Logs (e.g., Security.evtx)
 
-The program then processes the corresponding log files from the logs/ folder and saves the parsed results as JSON files in the results/ folder (this way it saves JSON files only for access.log).
+3. **Results**:
+
+After processing, results are saved in the results/ folder as JSON files.
 
 ## Automated Testing with test_runner.py
 
-There is also a test_runner.py script designed to automate testing of the parsers. It works as follows:
-
-It automatically scans all log files placed in the test_logs/ directory.
-
-For each test log file, it runs the appropriate parser.
-
-The results are saved as JSON files in the results/ directory for easy verification.
-
-This helps ensure that parser updates or new detection rules maintain expected behavior through automated regression tests.
+The test_runner.py script automates the testing of parsers for various log files. Simply place your log files in the test_logs/ folder, and the script will process each file, storing the results as JSON files in the results/ folder.
+```bash
+python test_runner.py
+```
+This ensures that any new detection rules or parser updates are properly validated.
 
 ## Supported Events
 
@@ -79,10 +79,9 @@ This helps ensure that parser updates or new detection rules maintain expected b
 ```bash
 LogSniper/
 │
-├── logs/               # Sample log files for testing
+├── test_logs/               # Sample log files for testing
 ├── results/            # Output files (JSON results)
 ├── src/                # Source code (analyzers, parsers, rules etc.)
-├── test_logs/          # Test log files used by test_runner.py
 ├── doc/                # Notes, diagrams, sketches
 ├── main.py             # Main program entry point
 ├── test_runner.py      # Automated testing script
@@ -108,11 +107,12 @@ Parsed into:
 ## Author
 
 Bartłomiej Biskupiak
+
 This is part of my blue team / cybersecurity learning path.
 
 ## Project Status
 
-**In development (MVP stage)** - weekly updates planned.
+**In active development** – Most features are functional, with planned updates for new detection rules and integrations.
 
 ## Roadmap Components
 
@@ -120,28 +120,18 @@ This is part of my blue team / cybersecurity learning path.
 
 - Basic web log analysis from access.log - **DONE**
 
+- EVTX log analysis - **DONE**
+
 - Advanced detection rules - **In progress**
 
 - SQLite or Elastic integration (optional, later)
 
-- Weekly updates planned
-
-## TODO: EVTX Brute-force Detection (T1110)
-
-[] Validate detection logic for 4625/5379 events (currently tested only with synthetic events).
-
-[] Confirm time window (>=3 failed logins within 60 seconds) works with real EVTX logs.
-
-[] Add proper EVTX sample logs for testing (Security.evtx).
-
-[] Integrate detection with test_runner.py for automated testing.
-
-[] Ensure suspicious_events output is clean JSON (timestamps already converted to ISO format).
-
 ## Contributing
 
 Want to help? Open an issue or submit a pull request!
+
 This is an educational project — all feedback is welcome.
 
 This project is part of my public cybersecurity portfolio.
+
 Started: July 2025
