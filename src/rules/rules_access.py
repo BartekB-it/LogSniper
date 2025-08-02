@@ -1,7 +1,7 @@
 from collections import defaultdict
 
 ip_404_counter = defaultdict(int)
-url_ip_map = defaultdict(set)
+#url_ip_map = defaultdict(set)
 
 def classify_access_log(log_entry):
     ua = log_entry["user_agent"].lower()
@@ -30,7 +30,7 @@ def classify_access_log(log_entry):
         return "POTENTIAL_BRUTEFORCE"
     elif ip_404_counter[ip] > 20:
         return "POTENTIAL_404_FLOOD"
-    elif len(url_ip_map[path]) > 10:
-        return "POTENTIAL_SCAN"
+#    elif len(url_ip_map[path]) > 10:
+#        return "POTENTIAL_SCAN"
     else:
         return "NORMAL"

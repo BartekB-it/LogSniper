@@ -1,0 +1,122 @@
+[
+  {
+    "timestamp": "Jul 24 22:10:01",
+    "ip": "192.168.1.50",
+    "user": "alice",
+    "classification": "FAILED_LOGIN"
+  },
+  {
+    "timestamp": "Jul 24 22:10:05",
+    "ip": "10.0.0.3",
+    "user": "bob",
+    "classification": "FAILED_LOGIN"
+  },
+  {
+    "timestamp": "Jul 24 22:10:10",
+    "ip": "10.0.0.3",
+    "user": "alice",
+    "classification": "SUCCESSFUL_LOGIN"
+  },
+  {
+    "timestamp": "Jul 24 22:10:15",
+    "ip": "192.168.1.50",
+    "user": "admin",
+    "classification": "FAILED_LOGIN"
+  },
+  {
+    "timestamp": "Jul 24 22:10:20",
+    "ip": "192.168.1.50",
+    "user": "admin",
+    "classification": "FAILED_LOGIN"
+  },
+  {
+    "timestamp": "Jul 24 22:10:25",
+    "ip": "192.168.1.50",
+    "user": "admin",
+    "classification": "FAILED_LOGIN"
+  },
+  {
+    "timestamp": "Jul 24 22:10:30",
+    "ip": "192.168.1.50",
+    "user": "admin",
+    "classification": "FAILED_LOGIN"
+  },
+  {
+    "timestamp": "Jul 24 22:10:35",
+    "ip": "10.0.0.4",
+    "user": "carol",
+    "classification": "SUCCESSFUL_LOGIN"
+  },
+  {
+    "timestamp": "Jul 24 22:10:40",
+    "ip": "N/A",
+    "user": "root",
+    "classification": "SUDO_USAGE"
+  },
+  {
+    "timestamp": "Jul 24 22:10:45",
+    "ip": "10.0.0.5",
+    "user": "guest",
+    "classification": "FAILED_LOGIN"
+  },
+  {
+    "timestamp": "Jul 24 22:10:50",
+    "ip": "10.0.0.6",
+    "user": "dave",
+    "classification": "SUCCESSFUL_LOGIN"
+  },
+  {
+    "timestamp": "Jul 24 22:10:55",
+    "ip": "10.0.0.7",
+    "user": "eve",
+    "classification": "FAILED_LOGIN"
+  },
+  {
+    "timestamp": "Jul 24 22:11:00",
+    "ip": "N/A",
+    "user": "root",
+    "classification": "SUDO_USAGE"
+  },
+  {
+    "timestamp": "Jul 24 22:11:05",
+    "ip": "10.0.0.8",
+    "user": "frank",
+    "classification": "FAILED_LOGIN"
+  },
+  {
+    "timestamp": "Jul 24 22:11:10",
+    "ip": "10.0.0.9",
+    "user": "grace",
+    "classification": "SUCCESSFUL_LOGIN"
+  },
+  {
+    "timestamp": "Jul 24 22:11:15",
+    "ip": "10.0.0.10",
+    "user": "heidi",
+    "classification": "FAILED_LOGIN"
+  },
+  {
+    "timestamp": "Jul 24 22:11:20",
+    "ip": "10.0.0.11",
+    "user": "ivan",
+    "classification": "FAILED_LOGIN"
+  },
+  {
+    "timestamp": "Jul 24 22:11:25",
+    "ip": "10.0.0.12",
+    "user": "judy",
+    "classification": "SUCCESSFUL_LOGIN"
+  },
+  {
+    "timestamp": "Jul 24 22:11:30",
+    "ip": "N/A",
+    "user": "root",
+    "classification": "SUDO_USAGE"
+  },
+  {
+    "timestamp": "Jul 24 22:11:35",
+    "ip": "10.0.0.13",
+    "user": "mallory",
+    "classification": "FAILED_LOGIN"
+  }
+]

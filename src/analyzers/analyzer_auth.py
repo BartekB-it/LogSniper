@@ -1,4 +1,5 @@
 import os
+import json
 from collections import defaultdict
 from src.parsers.parser_auth import parse_log_line_auth
 from src.rules.rules_auth import classify_auth_log, failed_attempts, BRUTE_FORCE_THRESHOLD
@@ -27,5 +28,10 @@ def analyze_auth_log(log_path):
 
             if classification != "NORMAL":
                 suspicious_entries.append(log_entry_auth)
+
+    with open("../../results/entries_auth.json", "w") as f:
+        json.dump(suspicious_entries, f, indent=2)
+
+    print(f"\nFound {len(suspicious_entries)} entries. Saved to suspicious_entries_access.json")
 
     return suspicious_entries
