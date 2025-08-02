@@ -51,12 +51,13 @@ This ensures that any new detection rules or parser updates are properly validat
 
 ### System Log Events (auth.log)
 
-| Event Type            | Description                             | MITRE ATT\&CK ID |
-| --------------------- | --------------------------------------- | ---------------- |
-| FAILED\_LOGIN         | Failed login attempt                    | T1110.001        |
-| BRUTE\_FORCE\_ATTEMPT | 5+ failed logins from same IP           | T1110            |
-| SUDO\_USAGE           | Use of administrative privileges (sudo) | T1548            |
-| SUCCESSFUL\_LOGIN     | Successful login                        | T1078            |
+| Event Type            | Description                                                                               |
+| --------------------- | ----------------------------------------------------------------------------------------- |
+| FAILED\_LOGIN         | Failed login attempt                                                                      |
+| BRUTE\_FORCE\_ATTEMPT | 10 failed logins from same IP                                                             |
+| SUDO\_USAGE           | Use of administrative privileges (sudo)                                                   |
+| SUCCESSFUL\_LOGIN     | Successful login                                                                          |
+| SUSPICIOUS\_HOURS     | Activity (successful login or sudo usage) occurring during suspicious hours (22:00–05:00) |
 
 ### Web Log Events (access.log)
 
@@ -81,6 +82,19 @@ This ensures that any new detection rules or parser updates are properly validat
 | CREATE_OR_MODIFY_SYSTEM_PROCESS           | Creation or modification of a Windows service (4697/7045) in unusual paths (e.g., AppData)   | T1543.003        |
 | ABUSE_ELEVATION_CONTROL_MECHANISM         | Suspicious process creation (4688) involving `cmd.exe`, `services.exe`, or `rundll32.exe` with specific arguments (e.g., `echo`, `\\pipe\\`, `,a /p:`) | T1548            |
 
+## Geolocation Integration & Request Limit
+
+In **LogSniper**, geolocation has been integrated for each log type (access, auth, evtx). The geolocation is retrieved using the ip-api service to provide detailed location data for each IP address found in the logs.
+
+### API Request Limiting
+
+To avoid exceeding the rate limit of **40 requests per minute** imposed by the geolocation API, the system includes a rate-limiting mechanism. When the limit is reached, the program pauses for one minute before making further requests. This ensures that the tool remains functional even under heavy load.
+
+### Example Log Entries with Geolocation Data:
+```bash
+[NORMAL] IP: 203.0.113.45, Date: [26/Jul/2025:08:01:01 +0000], Method: GET, Path: /index.html Status: 200 User Agent: Mozilla/5.0, Country: United States, Region: NY, City: New York, Timezone: America/New_York
+[CURL_SCANNER] IP: 192.168.1.110, Date: [26/Jul/2025:08:02:10 +0000], Method: GET, Path: /login Status: 200 User Agent: curl/7.58.0, Country: Unknown, Region: Unknown, City: Unknown, Timezone: Unknown
+```
 ## Project Structure
 ```bash
 LogSniper/

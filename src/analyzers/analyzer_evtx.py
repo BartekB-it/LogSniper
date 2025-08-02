@@ -3,6 +3,7 @@ import xmltodict
 import json
 import os
 from src.rules.rules_evtx import classify_evtx_log, suspicious_events
+from geo_api import get_geolocation
 
 os.chdir(os.path.dirname(__file__))
 

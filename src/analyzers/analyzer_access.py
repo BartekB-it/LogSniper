@@ -3,6 +3,7 @@ import json
 from collections import defaultdict
 from src.parsers.parser_access import parse_log_line
 from src.rules.rules_access import classify_access_log, ip_404_counter#, url_ip_map
+from geo_api import get_geolocation
 
 os.chdir(os.path.dirname(__file__))
 
@@ -13,6 +14,21 @@ def analyze_access_log(log_path):
     with open (log_path, "r") as file:
         for line in file:
             log_entry = parse_log_line(line)
+
+            ip = log_entry['ip']
+
+            geo_data = get_geolocation(ip)
+
+            if geo_data:
+                log_entry['country'] = geo_data.get('country', 'N/A')
+                log_entry['region'] = geo_data.get('region', 'N/A')
+                log_entry['city'] = geo_data.get('city', 'N/A')
+                log_entry['timezone'] = geo_data.get('timezone', 'N/A')
+            else:
+                log_entry['country'] = 'Unknown'
+                log_entry['region'] = 'Unknown'
+                log_entry['city'] = 'Unknown'
+                log_entry['timezone'] = 'Unknown'
 
             if log_entry["status"] == "404":
                 ip_404_counter[log_entry["ip"]] += 1
@@ -25,7 +41,7 @@ def analyze_access_log(log_path):
             if classification != "NORMAL":
                 classified_entries.append(log_entry)
 
-            print(f'[{classification}] IP: {log_entry["ip"]}, Date: {log_entry["date"]}, Method: {log_entry["method"]}, Path: {log_entry["path"]} Status: {log_entry["status"]} User Agent: {log_entry["user_agent"]}')
+            print(f'[{classification}] IP: {log_entry["ip"]}, Date: {log_entry["date"]}, Method: {log_entry["method"]}, Path: {log_entry["path"]} Status: {log_entry["status"]} User Agent: {log_entry["user_agent"]}, Country: {log_entry["country"]}, Region: {log_entry["region"]}, City: {log_entry["city"]}, Timezone: {log_entry["timezone"]}')
 
     with open("../../results/suspicious_entries_access.json", "w") as f:
         json.dump(classified_entries, f, indent=2)

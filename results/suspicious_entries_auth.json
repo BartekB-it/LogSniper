@@ -1,0 +1,53 @@
+[
+  {
+    "timestamp": "Jul 24 12:30:45",
+    "ip": "203.0.113.45",
+    "user": "alice",
+    "time": "12:30:45",
+    "hours": "12:",
+    "country": "United States",
+    "region": "NY",
+    "city": "New York",
+    "timezone": "America/New_York",
+    "classification": "FAILED_LOGIN"
+  },
+  {
+    "timestamp": "Jul 24 22:01:30",
+    "ip": "104.18.33.94",
+    "user": "N/A",
+    "time": "22:01:30",
+    "hours": "22:",
+    "country": "Canada",
+    "region": "ON",
+    "city": "Toronto",
+    "timezone": "America/Toronto",
+    "classification": "SUCCESSFUL_LOGIN",
+    "alert": "Suspicious activity detected at: Jul 24 22:01:30 (Time: 22 [in hours])"
+  },
+  {
+    "timestamp": "Jul 24 22:15:30",
+    "ip": "N/A",
+    "user": "eve",
+    "time": "22:15:30",
+    "hours": "22:",
+    "country": "Unknown",
+    "region": "Unknown",
+    "city": "Unknown",
+    "timezone": "Unknown",
+    "classification": "SUDO_USAGE",
+    "alert": "Suspicious activity detected at: Jul 24 22:15:30 (Time: 22 [in hours])"
+  },
+  {
+    "timestamp": "Jul 24 23:10:05",
+    "ip": "192.168.100.5",
+    "user": "N/A",
+    "time": "23:10:05",
+    "hours": "23:",
+    "country": "Unknown",
+    "region": "Unknown",
+    "city": "Unknown",
+    "timezone": "Unknown",
+    "classification": "SUCCESSFUL_LOGIN",
+    "alert": "Suspicious activity detected at: Jul 24 23:10:05 (Time: 23 [in hours])"
+  }
+]

@@ -3,6 +3,7 @@ import json
 from collections import defaultdict
 from src.parsers.parser_auth import parse_log_line_auth
 from src.rules.rules_auth import classify_auth_log, failed_attempts, BRUTE_FORCE_THRESHOLD
+from geo_api import get_geolocation
 
 os.chdir(os.path.dirname(__file__))
 
@@ -24,11 +25,27 @@ def analyze_auth_log(log_path):
         for line in file:
             log_entry_auth = parse_log_line_auth(line)
 
+            ip = log_entry_auth['ip']
+
+            geo_data = get_geolocation(ip)
+
+            if geo_data:
+                log_entry_auth['country'] = geo_data.get('country', 'N/A')
+                log_entry_auth['region'] = geo_data.get('region', 'N/A')
+                log_entry_auth['city'] = geo_data.get('city', 'N/A')
+                log_entry_auth['timezone'] = geo_data.get('timezone', 'N/A')
+            else:
+                log_entry_auth['country'] = 'Unknown'
+                log_entry_auth['region'] = 'Unknown'
+                log_entry_auth['city'] = 'Unknown'
+                log_entry_auth['timezone'] = 'Unknown'
+
+
             classification = classify_auth_log(line)
             log_entry_auth["classification"] = classification
             alert = ""
 
-            print(f"[{classification}] Time: {log_entry_auth['timestamp']}, IP: {log_entry_auth['ip']}, User: {log_entry_auth['user']}")
+            print(f"[{classification}] Time: {log_entry_auth['timestamp']}, IP: {log_entry_auth['ip']}, User: {log_entry_auth['user']}, Country: {log_entry_auth["country"]}, Region: {log_entry_auth["region"]}, City: {log_entry_auth["city"]}, Timezone: {log_entry_auth["timezone"]}")
 
             if classification == "FAILED_LOGIN" and log_entry_auth["ip"] != "N/A":
                 failed_attempts[log_entry_auth["ip"]] += 1

@@ -1,5 +1,6 @@
 import re
 from datetime import datetime, timedelta
+from geo_api import get_geolocation
 
 suspicious_events = []
 failed_attempts = {}
@@ -47,6 +48,19 @@ def Brute_Force_check(event):
             print(f"Failed to find IP or account info in event: {event_id}")
             return
         
+    geo_data = get_geolocation(ip)
+
+    if geo_data:
+        country = geo_data.get('country', 'N/A')
+        region = geo_data.get('region', 'N/A')
+        city = geo_data.get('city', 'N/A')
+        timezone = geo_data.get('timezone', 'N/A')
+    else:
+        country = 'Unknown'
+        region = 'Unknown'
+        city = 'Unknown'
+        timezone = 'Unknown'
+
     key = (ip, account)
     failed_attempts.setdefault(key, []).append(timestamp)
 
@@ -60,6 +74,10 @@ def Brute_Force_check(event):
             "detection": "Brute Force Attack (T1110) - Multiple Failed Logins",
             "ip": ip,
             "account": account,
+            "country": country,
+            "region": region,
+            "city": city,
+            "timezone": timezone,
             "attempts": len(failed_attempts[key]),
             "time_window_start": min(failed_attempts[key]).isoformat(),
             "time_window_end": max(failed_attempts[key]).isoformat()
