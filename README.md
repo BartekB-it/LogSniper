@@ -10,6 +10,13 @@ The primary objective of **LogSniper** is to provide a practical tool to enhance
 - Future expansion into a **lightweight SIEM** or a **honeypot**
 - **Threat hunting** by identifying security events like failed logins, suspicious scanning, and privilege escalation
 
+## What's New
+
+**v0.2 – Geolocation & API request limiting**
+- **Automatic IP geolocation** for all log types (access, auth, evtx): Each detected event is enriched with country, region, city, and timezone using ip-api.com.
+
+- **API limit awareness**: Geolocation requests are throttled to 40 per minute (in line with the API provider's fair usage policy). If the script reaches this limit, it will automatically pause and resume when allowed.
+
 ## How to Use
 
 1. **Install Dependencies**:
@@ -82,19 +89,22 @@ This ensures that any new detection rules or parser updates are properly validat
 | CREATE_OR_MODIFY_SYSTEM_PROCESS           | Creation or modification of a Windows service (4697/7045) in unusual paths (e.g., AppData)   | T1543.003        |
 | ABUSE_ELEVATION_CONTROL_MECHANISM         | Suspicious process creation (4688) involving `cmd.exe`, `services.exe`, or `rundll32.exe` with specific arguments (e.g., `echo`, `\\pipe\\`, `,a /p:`) | T1548            |
 
-## Geolocation Integration & Request Limit
+## Geolocation Enrichment
 
-In **LogSniper**, geolocation has been integrated for each log type (access, auth, evtx). The geolocation is retrieved using the ip-api service to provide detailed location data for each IP address found in the logs.
+- Every log entry is enriched with:
 
-### API Request Limiting
+    - country
 
-To avoid exceeding the rate limit of **40 requests per minute** imposed by the geolocation API, the system includes a rate-limiting mechanism. When the limit is reached, the program pauses for one minute before making further requests. This ensures that the tool remains functional even under heavy load.
+    - region
 
-### Example Log Entries with Geolocation Data:
-```bash
-[NORMAL] IP: 203.0.113.45, Date: [26/Jul/2025:08:01:01 +0000], Method: GET, Path: /index.html Status: 200 User Agent: Mozilla/5.0, Country: United States, Region: NY, City: New York, Timezone: America/New_York
-[CURL_SCANNER] IP: 192.168.1.110, Date: [26/Jul/2025:08:02:10 +0000], Method: GET, Path: /login Status: 200 User Agent: curl/7.58.0, Country: Unknown, Region: Unknown, City: Unknown, Timezone: Unknown
-```
+    - city
+
+    - timezone
+
+- Geolocation is performed via ip-api.com (up to 40 requests/minute per their policy).
+
+- If an IP can't be geolocated (e.g., private IP or rate limit hit), relevant fields will be set as "Unknown".
+
 ## Project Structure
 ```bash
 LogSniper/
