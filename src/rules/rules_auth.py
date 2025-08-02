@@ -1,7 +1,7 @@
 from collections import defaultdict
 
 failed_attempts = defaultdict(int)
-BRUTE_FORCE_THRESHOLD = 5
+BRUTE_FORCE_THRESHOLD = 10
 
 def classify_auth_log(line):
     if "Failed password" in line:

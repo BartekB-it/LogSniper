@@ -1,20 +1,53 @@
-Jul 24 22:10:01 server sshd[1234]: Failed password for user alice from 192.168.1.50 port 51412 ssh2
-Jul 24 22:10:05 server sshd[1235]: Failed password for user bob from 10.0.0.3 port 51413 ssh2
-Jul 24 22:10:10 server sshd[1236]: Accepted password for user alice from 10.0.0.3 port 51414 ssh2
-Jul 24 22:10:15 server sshd[1237]: Failed password for user admin from 192.168.1.50 port 51415 ssh2
-Jul 24 22:10:20 server sshd[1238]: Failed password for user admin from 192.168.1.50 port 51416 ssh2
-Jul 24 22:10:25 server sshd[1239]: Failed password for user admin from 192.168.1.50 port 51417 ssh2
-Jul 24 22:10:30 server sshd[1240]: Failed password for user admin from 192.168.1.50 port 51418 ssh2
-Jul 24 22:10:35 server sshd[1241]: Accepted password for user carol from 10.0.0.4 port 51419 ssh2
-Jul 24 22:10:40 server sudo: pam_unix(sudo:session): session opened for user root by carol(uid=0)
-Jul 24 22:10:45 server sshd[1243]: Failed password for invalid user guest from 10.0.0.5 port 51420 ssh2
-Jul 24 22:10:50 server sshd[1244]: Accepted password for user dave from 10.0.0.6 port 51421 ssh2
-Jul 24 22:10:55 server sshd[1245]: Failed password for user eve from 10.0.0.7 port 51422 ssh2
-Jul 24 22:11:00 server sshd[1246]: sudo: pam_unix(sudo:session): session opened for user root by dave(uid=0)
-Jul 24 22:11:05 server sshd[1247]: Failed password for user frank from 10.0.0.8 port 51423 ssh2
-Jul 24 22:11:10 server sshd[1248]: Accepted password for user grace from 10.0.0.9 port 51424 ssh2
-Jul 24 22:11:15 server sshd[1249]: Failed password for user heidi from 10.0.0.10 port 51425 ssh2
-Jul 24 22:11:20 server sshd[1250]: Failed password for user ivan from 10.0.0.11 port 51426 ssh2
-Jul 24 22:11:25 server sshd[1251]: Accepted password for user judy from 10.0.0.12 port 51427 ssh2
-Jul 24 22:11:30 server sshd[1252]: sudo: pam_unix(sudo:session): session closed for user root
-Jul 24 22:11:35 server sshd[1253]: Failed password for user mallory from 10.0.0.13 port 51428 ssh2
+Jul 24 08:10:01 server sshd[1001]: Failed password for user alice from 192.168.1.50 port 51412 ssh2
+Jul 24 08:10:05 server sshd[1002]: Accepted password for alice from 192.168.1.50 port 51413 ssh2
+Jul 24 08:15:10 server sshd[1003]: Failed password for user bob from 192.168.1.51 port 51414 ssh2
+Jul 24 08:15:15 server sshd[1004]: Failed password for user bob from 192.168.1.51 port 51415 ssh2
+Jul 24 09:00:00 server sshd[1005]: Accepted password for bob from 192.168.1.51 port 51416 ssh2
+Jul 24 10:05:32 server sshd[1006]: Failed password for user charlie from 192.168.1.52 port 51417 ssh2
+Jul 24 10:05:40 server sshd[1007]: Accepted password for charlie from 192.168.1.52 port 51418 ssh2
+Jul 24 11:00:01 server sudo[1008]: user alice : TTY=tty1 ; PWD=/home/alice ; USER=root ; COMMAND=/bin/cat
+Jul 24 12:00:02 server sudo[1009]: user bob : TTY=tty1 ; PWD=/home/bob ; USER=root ; COMMAND=/bin/ls
+Jul 24 12:30:00 server sshd[2001]: Failed password for user alice from 192.168.1.101 port 51450 ssh2
+Jul 24 12:30:05 server sshd[2002]: Failed password for user alice from 192.168.1.101 port 51451 ssh2
+Jul 24 12:30:10 server sshd[2003]: Failed password for user alice from 192.168.1.101 port 51452 ssh2
+Jul 24 12:30:15 server sshd[2004]: Failed password for user alice from 192.168.1.101 port 51453 ssh2
+Jul 24 12:30:20 server sshd[2005]: Failed password for user alice from 192.168.1.101 port 51454 ssh2
+Jul 24 12:30:25 server sshd[2006]: Failed password for user alice from 192.168.1.101 port 51455 ssh2
+Jul 24 12:30:30 server sshd[2007]: Failed password for user alice from 192.168.1.101 port 51456 ssh2
+Jul 24 12:30:35 server sshd[2008]: Failed password for user alice from 192.168.1.101 port 51457 ssh2
+Jul 24 12:30:40 server sshd[2009]: Failed password for user alice from 192.168.1.101 port 51458 ssh2
+Jul 24 12:30:45 server sshd[2010]: Failed password for user alice from 192.168.1.101 port 51459 ssh2
+Jul 24 13:15:00 server sshd[1010]: Failed password for user eve from 192.168.1.53 port 51419 ssh2
+Jul 24 13:15:10 server sshd[1011]: Failed password for user eve from 192.168.1.53 port 51420 ssh2
+Jul 24 14:00:25 server sshd[1012]: Accepted password for eve from 192.168.1.53 port 51421 ssh2
+Jul 24 14:15:30 server sshd[1013]: Failed password for user frank from 192.168.1.54 port 51422 ssh2
+Jul 24 15:00:10 server sshd[1014]: Accepted password for frank from 192.168.1.54 port 51423 ssh2
+Jul 24 16:10:25 server sudo[1015]: user frank : TTY=tty1 ; PWD=/home/frank ; USER=root ; COMMAND=/bin/cat
+Jul 24 17:00:20 server sshd[1016]: Failed password for user grace from 192.168.1.55 port 51424 ssh2
+Jul 24 18:10:30 server sshd[1017]: Failed password for user grace from 192.168.1.55 port 51425 ssh2
+Jul 24 18:15:40 server sshd[1018]: Accepted password for grace from 192.168.1.55 port 51426 ssh2
+Jul 24 20:00:05 server sshd[1019]: Failed password for user eve from 192.168.1.56 port 51427 ssh2
+Jul 24 20:30:10 server sshd[1020]: Accepted password for eve from 192.168.1.56 port 51428 ssh2
+Jul 24 21:10:00 server sshd[1021]: Failed password for user mallory from 192.168.1.57 port 51429 ssh2
+Jul 24 22:01:30 server sshd[1022]: Accepted password for mallory from 192.168.1.57 port 51430 ssh2
+Jul 24 22:10:05 server sshd[1023]: Failed password for user eve from 192.168.1.58 port 51431 ssh2
+Jul 24 22:10:10 server sshd[1024]: Failed password for user eve from 192.168.1.58 port 51432 ssh2
+Jul 24 22:15:30 server sudo[1025]: user eve : TTY=tty1 ; PWD=/home/eve ; USER=root ; COMMAND=/bin/cat
+Jul 24 23:00:05 server sshd[1026]: Failed password for user frank from 192.168.1.59 port 51433 ssh2
+Jul 24 23:00:10 server sshd[1027]: Failed password for user frank from 192.168.1.59 port 51434 ssh2
+Jul 24 23:00:15 server sshd[1028]: Failed password for user frank from 192.168.1.59 port 51435 ssh2
+Jul 24 23:00:20 server sshd[1029]: Failed password for user frank from 192.168.1.59 port 51436 ssh2
+Jul 24 23:10:05 server sshd[1030]: Accepted password for frank from 192.168.1.59 port 51437 ssh2
+Jul 24 23:30:10 server sudo[1031]: user frank : TTY=tty1 ; PWD=/home/frank ; USER=root ; COMMAND=/bin/cat
+Jul 24 23:45:30 server sshd[1032]: Failed password for user eve from 192.168.1.60 port 51438 ssh2
+Jul 24 23:50:00 server sshd[1033]: Accepted password for eve from 192.168.1.60 port 51439 ssh2
+Jul 25 00:00:05 server sshd[1034]: Failed password for user grace from 192.168.1.61 port 51440 ssh2
+Jul 25 00:00:10 server sshd[1035]: Failed password for user grace from 192.168.1.61 port 51441 ssh2
+Jul 25 00:00:15 server sshd[1036]: Failed password for user grace from 192.168.1.61 port 51442 ssh2
+Jul 25 00:00:20 server sshd[1037]: Accepted password for grace from 192.168.1.61 port 51443 ssh2
+Jul 25 01:00:10 server sshd[1038]: Accepted password for grace from 192.168.1.61 port 51444 ssh2
+Jul 25 02:00:15 server sshd[1039]: Failed password for user mallory from 192.168.1.62 port 51445 ssh2
+Jul 25 02:00:20 server sshd[1040]: Failed password for user mallory from 192.168.1.62 port 51446 ssh2
+Jul 25 02:00:25 server sshd[1041]: Accepted password for mallory from 192.168.1.62 port 51447 ssh2
+Jul 25 03:00:30 server sshd[1042]: Failed password for user alice from 192.168.1.63 port 51448 ssh2
+Jul 25 03:00:35 server sshd[1043]: Accepted password for alice from 192.168.1.63 port 51449 ssh2
