@@ -4,6 +4,7 @@ from collections import defaultdict
 from src.parsers.parser_auth import parse_log_line_auth
 from src.rules.rules_auth import classify_auth_log, failed_attempts, BRUTE_FORCE_THRESHOLD
 from geo_api import get_geolocation
+from email_notification import send_alert_report, send_analysis_report_auth
 
 os.chdir(os.path.dirname(__file__))
 
@@ -52,6 +53,7 @@ def analyze_auth_log(log_path):
                 if failed_attempts[log_entry_auth["ip"]] == BRUTE_FORCE_THRESHOLD:
                     alert = f"BRUTE FORCE DETECTED from {log_entry_auth["ip"]} after {BRUTE_FORCE_THRESHOLD} failed attempts"
                     print(f"!!! {alert}")
+                    send_alert_report()
                     suspicious_entries.append(log_entry_auth)
 
             if classification == "SUCCESSFUL_LOGIN" or classification == "SUDO_USAGE":
@@ -69,5 +71,7 @@ def analyze_auth_log(log_path):
         json.dump(suspicious_entries, f, indent=2)
 
     print(f"\nFound {len(suspicious_entries)} entries. Saved to suspicious_entries_auth.json")
+
+    send_analysis_report_auth(suspicious_entries)
 
     return suspicious_entries

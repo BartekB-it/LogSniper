@@ -4,6 +4,7 @@ from collections import defaultdict
 from src.parsers.parser_access import parse_log_line
 from src.rules.rules_access import classify_access_log, ip_404_counter#, url_ip_map
 from geo_api import get_geolocation
+from email_notification import send_alert_report, send_analysis_report_access
 
 os.chdir(os.path.dirname(__file__))
 
@@ -41,10 +42,15 @@ def analyze_access_log(log_path):
             if classification != "NORMAL":
                 classified_entries.append(log_entry)
 
+            if classification == "POTENTIAL_BRUTEFORCE":
+                send_alert_report()
+
             print(f'[{classification}] IP: {log_entry["ip"]}, Date: {log_entry["date"]}, Method: {log_entry["method"]}, Path: {log_entry["path"]} Status: {log_entry["status"]} User Agent: {log_entry["user_agent"]}, Country: {log_entry["country"]}, Region: {log_entry["region"]}, City: {log_entry["city"]}, Timezone: {log_entry["timezone"]}')
 
     with open("../../results/suspicious_entries_access.json", "w") as f:
         json.dump(classified_entries, f, indent=2)
+
+    send_analysis_report_access(classified_entries)
 
     print(f"\nFound {len(classified_entries)} classified entries. Saved to suspicious_entries_access.json")
 

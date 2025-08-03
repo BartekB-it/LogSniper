@@ -12,7 +12,16 @@ The primary objective of **LogSniper** is to provide a practical tool to enhance
 
 ## What's New
 
+**v0.3 – Email Notifications & Improved Reporting**
+
+- **Brute Force Alert**: The tool now sends an email notification when a brute-force attack is detected.
+
+- **Analysis Report Email**: After completing the log analysis, an email will be sent with the results of the analysis.
+
+- **Email Setup**: To use email notifications, the user must create a .env file with their email credentials.
+
 **v0.2 – Geolocation & API request limiting**
+
 - **Automatic IP geolocation** for all log types (access, auth, evtx): Each detected event is enriched with country, region, city, and timezone using ip-api.com.
 
 - **API limit awareness**: Geolocation requests are throttled to 40 per minute (in line with the API provider's fair usage policy). If the script reaches this limit, it will automatically pause and resume when allowed.
@@ -39,6 +48,23 @@ evtx — to parse Windows Event Logs (e.g., Security.evtx)
 3. **Results**:
 
 After processing, results are saved in the results/ folder as JSON files.
+
+4. **Email Notifications Setup**:
+
+To enable email notifications, create a .env file in the root directory with the following content:
+```bash
+EMAIL_USER=your_email_address@gmail.com
+EMAIL_PASS=your_application_password
+```
+- The EMAIL_USER is your Gmail address.
+
+- The EMAIL_PASS is an application-specific password generated in your Google account settings.
+
+Once set up, the tool will send email notifications:
+
+- **For brute force detection** — When a brute-force attack is identified, an alert will be sent.
+
+- **After analysis completion** — A summary report of the analysis will be sent to your email.
 
 ## Demo
 
@@ -151,6 +177,10 @@ This is part of my blue team / cybersecurity learning path.
 - Basic web log analysis from access.log - **DONE**
 
 - EVTX log analysis - **DONE**
+
+- Geolocation for all log types, with 40 requests/minute API limit - **DONE**
+
+- Email notifications for brute-force detection and analysis reports - **DONE**
 
 - Advanced detection rules - **In progress**
 

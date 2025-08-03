@@ -1,6 +1,7 @@
 import re
 from datetime import datetime, timedelta
 from geo_api import get_geolocation
+from email_notification import send_alert_report
 
 suspicious_events = []
 failed_attempts = {}
@@ -86,6 +87,9 @@ def Brute_Force_check(event):
         suspicious_events.append(suspicious_events_step)
 
         failed_attempts[key] = [failed_attempts[key][-1]]
+
+        if len(suspicious_events) == 1:
+            send_alert_report()
 
 def Create_or_Modify_System_Process_check(event):
 
