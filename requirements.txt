@@ -1,0 +1,7 @@
+evtx==0.8.9
+requests
+streamlit
+matplotlib
+pandas
+dotenv
+xmltodict
