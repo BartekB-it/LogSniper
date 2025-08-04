@@ -31,13 +31,13 @@ def analyze_access_log(log_path):
                 log_entry['city'] = 'Unknown'
                 log_entry['timezone'] = 'Unknown'
 
-            if log_entry["status"] == "404":
-                ip_404_counter[log_entry["ip"]] += 1
+            if log_entry['status'] == "404":
+                ip_404_counter[log_entry['ip']] += 1
 
 #            url_ip_map[log_entry["path"]].add(log_entry["ip"])
 
             classification = classify_access_log(log_entry)
-            log_entry["classification"] = classification
+            log_entry['classification'] = classification
 
             if classification != "NORMAL":
                 classified_entries.append(log_entry)
@@ -45,7 +45,7 @@ def analyze_access_log(log_path):
             if classification == "POTENTIAL_BRUTEFORCE":
                 send_alert_report()
 
-            print(f'[{classification}] IP: {log_entry["ip"]}, Date: {log_entry["date"]}, Method: {log_entry["method"]}, Path: {log_entry["path"]} Status: {log_entry["status"]} User Agent: {log_entry["user_agent"]}, Country: {log_entry["country"]}, Region: {log_entry["region"]}, City: {log_entry["city"]}, Timezone: {log_entry["timezone"]}')
+            print(f"[{classification}] IP: {log_entry['ip']}, Date: {log_entry['date']}, Method: {log_entry['method']}, Path: {log_entry['path']} Status: {log_entry['status']} User Agent: {log_entry['user_agent']}, Country: {log_entry['country']}, Region: {log_entry['region']}, City: {log_entry['city']}, Timezone: {log_entry['timezone']}")
 
     with open("../../results/suspicious_entries_access.json", "w") as f:
         json.dump(classified_entries, f, indent=2)

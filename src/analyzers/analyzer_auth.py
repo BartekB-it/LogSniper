@@ -43,15 +43,15 @@ def analyze_auth_log(log_path):
 
 
             classification = classify_auth_log(line)
-            log_entry_auth["classification"] = classification
+            log_entry_auth['classification'] = classification
             alert = ""
 
-            print(f"[{classification}] Time: {log_entry_auth['timestamp']}, IP: {log_entry_auth['ip']}, User: {log_entry_auth['user']}, Country: {log_entry_auth["country"]}, Region: {log_entry_auth["region"]}, City: {log_entry_auth["city"]}, Timezone: {log_entry_auth["timezone"]}")
+            print(f"[{classification}] Time: {log_entry_auth['timestamp']}, IP: {log_entry_auth['ip']}, User: {log_entry_auth['user']}, Country: {log_entry_auth['country']}, Region: {log_entry_auth['region']}, City: {log_entry_auth['city']}, Timezone: {log_entry_auth['timezone']}")
 
-            if classification == "FAILED_LOGIN" and log_entry_auth["ip"] != "N/A":
-                failed_attempts[log_entry_auth["ip"]] += 1
-                if failed_attempts[log_entry_auth["ip"]] == BRUTE_FORCE_THRESHOLD:
-                    alert = f"BRUTE FORCE DETECTED from {log_entry_auth["ip"]} after {BRUTE_FORCE_THRESHOLD} failed attempts"
+            if classification == "FAILED_LOGIN" and log_entry_auth['ip'] != "N/A":
+                failed_attempts[log_entry_auth['ip']] += 1
+                if failed_attempts[log_entry_auth['ip']] == BRUTE_FORCE_THRESHOLD:
+                    alert = f"BRUTE FORCE DETECTED from {log_entry_auth['ip']} after {BRUTE_FORCE_THRESHOLD} failed attempts"
                     print(f"!!! {alert}")
                     send_alert_report()
                     suspicious_entries.append(log_entry_auth)
@@ -61,7 +61,7 @@ def analyze_auth_log(log_path):
                 if is_suspicious_hour(hour):
                     alert = f"Suspicious activity detected at: {log_entry_auth['timestamp']} (Time: {hour} [in hours])"
                     print(f"!!! {alert}")
-                    log_entry_auth["alert"] = alert
+                    log_entry_auth['alert'] = alert
                     suspicious_entries.append(log_entry_auth)
 
 #            if classification != "NORMAL":

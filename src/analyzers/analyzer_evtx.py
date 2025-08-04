@@ -18,4 +18,6 @@ def analyze_evtx_log(evtx_path):
 
 def generate_report():
     send_analysis_report_evtx(suspicious_events)
+    with open("../../results/suspicious_entries_evtx.json", "w") as f:
+        json.dump(suspicious_events, f, indent=2)
     return suspicious_events

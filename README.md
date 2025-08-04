@@ -12,6 +12,12 @@ The primary objective of **LogSniper** is to provide a practical tool to enhance
 
 ## What's New
 
+**v0.4 – Results Visualization Dashboard (Streamlit)**
+
+- **Interactive dashboard for log analysis**: You can now visualize and filter your analysis results using an interactive Streamlit app (charts_app.py).
+
+- **Supports all log types**: Works for results from auth.log, access.log, and EVTX files.
+
 **v0.3 – Email Notifications & Improved Reporting**
 
 - **Brute Force Alert**: The tool now sends an email notification when a brute-force attack is detected.
@@ -60,11 +66,25 @@ EMAIL_PASS=your_application_password
 
 - The EMAIL_PASS is an application-specific password generated in your Google account settings.
 
-Once set up, the tool will send email notifications:
+Once set up, the tool will send:
 
-- **For brute force detection** — When a brute-force attack is identified, an alert will be sent.
+- **Brute-force alerts** when attacks are detected.
 
-- **After analysis completion** — A summary report of the analysis will be sent to your email.
+- **Analysis summary** after each scan.
+
+5. **Results Visualization (NEW!)**:
+
+Explore and filter your results visually with the **Streamlit dashboard**.
+
+**To run the dashboard:**
+```bash
+streamlit run charts_app.py
+```
+- Select any JSON file from the results/ folder.
+
+- View tables, filter by classification, and see bar charts for detection types.
+
+- Works for all supported log types (including EVTX).
 
 ## Demo
 

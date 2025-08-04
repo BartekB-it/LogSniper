@@ -1,4 +1,4 @@
-evtx==0.8.9
+git+https://github.com/williballenthin/python-evtx.git
 requests
 streamlit
 matplotlib

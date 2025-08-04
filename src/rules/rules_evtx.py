@@ -72,6 +72,7 @@ def Brute_Force_check(event):
 
     if len(failed_attempts[key]) >= 5:
         suspicious_events_step = {
+            "classification": "Brute Force Attack",
             "detection": "Brute Force Attack (T1110) - Multiple Failed Logins",
             "ip": ip,
             "account": account,
@@ -125,6 +126,7 @@ def Create_or_Modify_System_Process_check(event):
 
     if match_found:
         suspicious_event_step = {
+            "classification": "Create or Modify System Process",
             "detection": "Create or Modify System Process (T1543.003)",
             "service_name": service_name or "N/A",
             "paths": all_paths,
@@ -166,6 +168,7 @@ def Abuse_Elevation_Control_Mechanism_check(event):
 
     if cond_1 or cond_2:
         suspicious_event_step = {
+            "classification": "Abuse Elevation Control Mechanism",
             "detection": "Abuse Elevation Control Mechanism (T1548)",
             "target_user_name": target_user_name or "N/A",
             "parent_process_name": parent_process_name or "N/A",

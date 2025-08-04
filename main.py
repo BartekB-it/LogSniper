@@ -1,8 +1,6 @@
 from src.analyzers.analyzer_access import analyze_access_log
 from src.analyzers.analyzer_auth import analyze_auth_log
 from src.analyzers.analyzer_evtx import generate_report, analyze_evtx_log
-from src.rules.rules_evtx import classify_evtx_log, suspicious_events
-from Evtx.Evtx import Evtx
 import json
 import xmltodict
 
