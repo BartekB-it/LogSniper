@@ -46,12 +46,19 @@ def analyze_auth_log(log_path):
             log_entry_auth['classification'] = classification
             alert = ""
 
-            print(f"[{classification}] Time: {log_entry_auth['timestamp']}, IP: {log_entry_auth['ip']}, User: {log_entry_auth['user']}, Country: {log_entry_auth['country']}, Region: {log_entry_auth['region']}, City: {log_entry_auth['city']}, Timezone: {log_entry_auth['timezone']}")
+            timestamp = log_entry_auth['timestamp']
+            user = log_entry_auth['user']
+            country = log_entry_auth['country']
+            region = log_entry_auth['region']
+            city = log_entry_auth['city']
+            timezone = log_entry_auth['timezone']
 
-            if classification == "FAILED_LOGIN" and log_entry_auth['ip'] != "N/A":
-                failed_attempts[log_entry_auth['ip']] += 1
-                if failed_attempts[log_entry_auth['ip']] == BRUTE_FORCE_THRESHOLD:
-                    alert = f"BRUTE FORCE DETECTED from {log_entry_auth['ip']} after {BRUTE_FORCE_THRESHOLD} failed attempts"
+            print(f"[{classification}] Time: {timestamp}, IP: {ip}, User: {user}, Country: {country}, Region: {region}, City: {city}, Timezone: {timezone}")
+
+            if classification == "FAILED_LOGIN" and ip != "N/A":
+                failed_attempts[ip] += 1
+                if failed_attempts[ip] == BRUTE_FORCE_THRESHOLD:
+                    alert = f"BRUTE FORCE DETECTED from {ip} after {BRUTE_FORCE_THRESHOLD} failed attempts"
                     print(f"!!! {alert}")
                     send_alert_report()
                     suspicious_entries.append(log_entry_auth)
@@ -59,7 +66,7 @@ def analyze_auth_log(log_path):
             if classification == "SUCCESSFUL_LOGIN" or classification == "SUDO_USAGE":
                 hour = extract_hour_from_log(log_entry_auth)
                 if is_suspicious_hour(hour):
-                    alert = f"Suspicious activity detected at: {log_entry_auth['timestamp']} (Time: {hour} [in hours])"
+                    alert = f"Suspicious activity detected at: {timestamp} (Time: {hour} [in hours])"
                     print(f"!!! {alert}")
                     log_entry_auth['alert'] = alert
                     suspicious_entries.append(log_entry_auth)

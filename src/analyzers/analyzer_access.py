@@ -45,7 +45,17 @@ def analyze_access_log(log_path):
             if classification == "POTENTIAL_BRUTEFORCE":
                 send_alert_report()
 
-            print(f"[{classification}] IP: {log_entry['ip']}, Date: {log_entry['date']}, Method: {log_entry['method']}, Path: {log_entry['path']} Status: {log_entry['status']} User Agent: {log_entry['user_agent']}, Country: {log_entry['country']}, Region: {log_entry['region']}, City: {log_entry['city']}, Timezone: {log_entry['timezone']}")
+            date = log_entry['date']
+            method = log_entry['method']
+            path = log_entry['path']
+            status = log_entry['status']
+            user_agent = log_entry['user_agent']
+            country = log_entry['country']
+            region = log_entry['region']
+            city = log_entry['city']
+            timezone = log_entry['timezone']
+
+            print(f"[{classification}] IP: {ip}, Date: {date}, Method: {method}, Path: {path} Status: {status} User Agent: {user_agent}, Country: {country}, Region: {region}, City: {city}, Timezone: {timezone}")
 
     with open("../../results/suspicious_entries_access.json", "w") as f:
         json.dump(classified_entries, f, indent=2)
