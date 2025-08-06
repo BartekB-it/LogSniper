@@ -25,7 +25,7 @@ def get_geolocation(ip):
 
     request_times.append(datetime.now())
 
-    endpoint = f'http://ip-api.com/json/{ip}?fields=country,region,city,timezone'
+    endpoint = f'http://ip-api.com/json/{ip}?fields=country,region,city,timezone,lat,lon'
     response = requests.get(endpoint)
     if response.status_code == 200:
         try:

@@ -12,6 +12,12 @@ The primary objective of **LogSniper** is to provide a practical tool to enhance
 
 ## What's New
 
+**v0.5 – Interactive IP Geolocation Map & Lat/Lon enrichment**
+
+- **IP Geolocation Map Visualization**: The results dashboard (charts_app.py) now displays log event locations on an interactive world map (OpenStreetMap, no API key required) using Folium. This lets you instantly see where suspicious activity is coming from.
+
+- **Latitude/Longitude in Geolocation**: The geolocation enrichment (in geo_api.py) now includes latitude and longitude coordinates for every public IP. This allows for precise mapping and spatial analysis of threat sources.
+
 **v0.4 – Results Visualization Dashboard (Streamlit)**
 
 - **Interactive dashboard for log analysis**: You can now visualize and filter your analysis results using an interactive Streamlit app (charts_app.py).
@@ -72,9 +78,19 @@ Once set up, the tool will send:
 
 - **Analysis summary** after each scan.
 
-5. **Results Visualization (NEW!)**:
+5. **Results Visualization (NEW! - includes map view)**:
 
 Explore and filter your results visually with the **Streamlit dashboard**.
+```bash
+streamlit run charts_app.py
+```
+- Select any JSON file from the results/ folder.
+
+- View tables, filter by classification, see bar charts for detection types.
+
+- **See the geographic origin of events on an interactive map** (no tokens needed).
+
+- Works for all supported log types (including EVTX).
 
 **To run the dashboard:**
 ```bash
@@ -94,7 +110,7 @@ Here's a quick demo of **LogSniper** in action:
 
 ## Automated Testing with test_runner.py
 
-The test_runner.py script automates the testing of parsers for various log files. Simply place your log files in the test_logs/ folder, and the script will process each file, storing the results as JSON files in the results/ folder.
+The test_runner.py script automates testing of parsers for various log files in the test_logs/ folder, storing JSON results in results/.
 ```bash
 python test_runner.py
 ```
@@ -137,30 +153,33 @@ This ensures that any new detection rules or parser updates are properly validat
 
 ## Geolocation Enrichment
 
-- Every log entry is enriched with:
+Every log entry is enriched with:
 
-    - country
+- country
 
-    - region
+- region
 
-    - city
+- city
 
-    - timezone
+- timezone
 
-- Geolocation is performed via ip-api.com (up to 40 requests/minute per their policy).
+- latitude
 
-- If an IP can't be geolocated (e.g., private IP or rate limit hit), relevant fields will be set as "Unknown".
+- longitude
+
+Geolocation is performed via ip-api.com (up to 40 requests/minute per their policy). If an IP can't be geolocated (e.g., private IP or rate limit hit), relevant fields will be set as "Unknown".
 
 ## Project Structure
 ```bash
 LogSniper/
 │
-├── test_logs/               # Sample log files for testing
+├── test_logs/          # Sample log files for testing
 ├── results/            # Output files (JSON results)
 ├── src/                # Source code (analyzers, parsers, rules etc.)
-├── doc/                # Notes, diagrams, sketches
 ├── main.py             # Main program entry point
 ├── test_runner.py      # Automated testing script
+├── charts_app.py       # Visualization dashboard (NEW: map view!)
+├── geo_api.py          # Geolocation enrichment module (NEW: lat/lon)
 ├── README.md           # Project documentation
 ```
 ## Sample Input Log
@@ -201,6 +220,8 @@ This is part of my blue team / cybersecurity learning path.
 - Geolocation for all log types, with 40 requests/minute API limit - **DONE**
 
 - Email notifications for brute-force detection and analysis reports - **DONE**
+
+- IP geolocation map visualization – **NEW, DONE**
 
 - Advanced detection rules - **In progress**
 
