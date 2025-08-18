@@ -12,6 +12,10 @@ The primary objective of **LogSniper** is to provide a practical tool to enhance
 
 ## What's New
 
+**v0.6 - Syslogs**
+
+- **Syslogs** are now available to analyze as well. (They have severity levels working as well, but it's still WIP)
+
 **v0.5 – Interactive IP Geolocation Map & Lat/Lon enrichment**
 
 - **IP Geolocation Map Visualization**: The results dashboard (charts_app.py) now displays log event locations on an interactive world map (OpenStreetMap, no API key required) using Folium. This lets you instantly see where suspicious activity is coming from.
@@ -221,7 +225,11 @@ This is part of my blue team / cybersecurity learning path.
 
 - Email notifications for brute-force detection and analysis reports - **DONE**
 
-- IP geolocation map visualization – **NEW, DONE**
+- IP geolocation map visualization – **DONE**
+
+- Sys log analysis - **DONE**
+
+- Severity levels of events - **In progress, done just for syslog**
 
 - Advanced detection rules - **In progress**
 

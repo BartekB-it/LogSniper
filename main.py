@@ -1,10 +1,11 @@
 from src.analyzers.analyzer_access import analyze_access_log
 from src.analyzers.analyzer_auth import analyze_auth_log
 from src.analyzers.analyzer_evtx import generate_report, analyze_evtx_log
+from src.analyzers.analyzer_sys import analyze_sys_log
 import json
 import xmltodict
 
-log_type = input("Choose log type (access/auth/evtx): ")
+log_type = input("Choose log type (access/auth/evtx/sys): ")
 
 if log_type == "access":
     try:
@@ -26,6 +27,14 @@ elif log_type == "evtx":
         analyze_evtx_log(evtx_path)
         results = generate_report()
         print(f"EVTX results: {json.dumps(results, indent=2)}")
+    except FileNotFoundError:
+        print("The specified file was not found.")
+    except Exception as e:
+        print(f"An error occured: {e}")
+elif log_type == "sys":
+    try:
+        sys_path = "../../test_logs/syslog.log"
+        analyze_sys_log(sys_path)
     except FileNotFoundError:
         print("The specified file was not found.")
     except Exception as e:

@@ -1,0 +1,115 @@
+Aug  4 02:41:13 server1 sshd[2234]: Failed password for root from 10.0.1.25 port 55122 ssh2
+Aug  4 02:41:14 server1 sshd[2234]: Failed password for root from 10.0.1.25 port 55122 ssh2
+Aug  4 02:41:15 server1 sshd[2234]: Failed password for root from 10.0.1.25 port 55122 ssh2
+Aug  4 02:41:19 server1 sshd[2234]: Accepted password for alice from 192.168.1.30 port 41822 ssh2
+Aug  4 05:42:00 server1 su[2920]: (to root) bob on pts/0
+Aug  4 05:42:01 server1 su[2920]: pam_unix(su:session): session opened for user root by bob(uid=1001)
+Aug  4 07:43:18 server1 sudo:     carol : TTY=pts/1 ; PWD=/home/carol ; USER=root ; COMMAND=/bin/systemctl restart nginx
+Aug  4 08:44:22 server1 sshd[2240]: Failed password for invalid user admin from 203.0.113.7 port 51011 ssh2
+Aug  4 08:44:23 server1 sshd[2240]: Failed password for invalid user admin from 203.0.113.7 port 51011 ssh2
+Aug  4 08:44:24 server1 sshd[2240]: Failed password for invalid user admin from 203.0.113.7 port 51011 ssh2
+Aug  4 15:41:13 server1 sshd[2234]: Failed password for root from 10.0.1.25 port 55122 ssh2
+Aug  4 15:41:14 server1 sshd[2234]: Failed password for root from 10.0.1.25 port 55122 ssh2
+Aug  4 15:41:15 server1 sshd[2234]: Failed password for root from 10.0.1.25 port 55122 ssh2
+Aug  4 15:41:19 server1 sshd[2234]: Accepted password for alice from 192.168.1.30 port 41822 ssh2
+Aug  4 15:42:00 server1 su[2920]: (to root) bob on pts/0
+Aug  4 15:42:01 server1 su[2920]: pam_unix(su:session): session opened for user root by bob(uid=1001)
+Aug  4 15:43:18 server1 sudo:     carol : TTY=pts/1 ; PWD=/home/carol ; USER=root ; COMMAND=/bin/systemctl restart nginx
+Aug  4 15:44:22 server1 sshd[2240]: Failed password for invalid user admin from 203.0.113.7 port 51011 ssh2
+Aug  4 15:44:23 server1 sshd[2240]: Failed password for invalid user admin from 203.0.113.7 port 51011 ssh2
+Aug  4 15:44:24 server1 sshd[2240]: Failed password for invalid user admin from 203.0.113.7 port 51011 ssh2
+Aug  4 15:45:12 server1 sshd[2260]: Accepted password for david from 172.16.2.55 port 52018 ssh2
+Aug  4 15:46:03 server1 sshd[2270]: Failed password for root from 45.76.32.11 port 50221 ssh2
+Aug  4 15:46:45 server1 sshd[2281]: Failed password for root from 45.76.32.11 port 50221 ssh2
+Aug  4 15:47:33 server1 sshd[2283]: Failed password for root from 45.76.32.11 port 50221 ssh2
+Aug  4 15:48:01 server1 sshd[2290]: Accepted password for eve from 192.168.1.50 port 43321 ssh2
+Aug  4 15:48:55 server1 crontab[2410]: (bob) LIST (bob)
+Aug  4 15:49:22 server1 sudo:     frank : TTY=pts/3 ; PWD=/home/frank ; USER=root ; COMMAND=/bin/apt update
+Aug  4 15:50:04 server1 sshd[2301]: Failed password for root from 77.88.99.11 port 52112 ssh2
+Aug  4 15:51:37 server1 sshd[2305]: Accepted publickey for grace from 8.8.8.8 port 41321 ssh2: RSA SHA256:XYZ
+Aug  4 15:52:01 server1 sshd[2311]: Connection closed by authenticating user alice 192.168.1.30 port 41822 [preauth]
+Aug  4 15:53:10 server1 sshd[2315]: Failed password for root from 102.54.21.33 port 55211 ssh2
+Aug  4 15:53:15 server1 sshd[2315]: Failed password for root from 102.54.21.33 port 55211 ssh2
+Aug  4 15:53:18 server1 sshd[2315]: Failed password for root from 102.54.21.33 port 55211 ssh2
+Aug  4 15:54:05 server1 sudo:     alice : TTY=pts/2 ; PWD=/home/alice ; USER=root ; COMMAND=/usr/bin/apt upgrade
+Aug  4 15:54:42 server1 su[2321]: (to root) david on pts/4
+Aug  4 15:55:01 server1 su[2321]: pam_unix(su:session): session opened for user root by david(uid=1002)
+Aug  4 15:55:37 server1 sshd[2328]: Failed password for invalid user test from 203.0.113.44 port 49811 ssh2
+Aug  4 15:55:38 server1 sshd[2328]: Failed password for invalid user test from 203.0.113.44 port 49811 ssh2
+Aug  4 15:55:39 server1 sshd[2328]: Failed password for invalid user test from 203.0.113.44 port 49811 ssh2
+Aug  4 15:56:04 server1 sshd[2333]: Accepted password for mallory from 192.168.2.20 port 42422 ssh2
+Aug  4 15:56:55 server1 sshd[2340]: Failed password for root from 150.20.30.40 port 52222 ssh2
+Aug  4 15:57:03 server1 crontab[2345]: (carol) REPLACE (carol)
+Aug  4 15:57:21 server1 sshd[2350]: Failed password for root from 150.20.30.40 port 52222 ssh2
+Aug  4 15:57:40 server1 sshd[2355]: Failed password for root from 150.20.30.40 port 52222 ssh2
+Aug  4 15:58:10 server1 sshd[2360]: Accepted publickey for frank from 172.20.5.10 port 49221 ssh2: RSA SHA256:ABC123
+Aug  4 15:58:35 server1 sudo:     bob : TTY=pts/5 ; PWD=/var/log ; USER=root ; COMMAND=/bin/tail -f auth.log
+Aug  4 15:59:01 server1 sshd[2365]: Failed password for root from 88.77.66.55 port 51234 ssh2
+Aug  4 15:59:05 server1 sshd[2365]: Failed password for root from 88.77.66.55 port 51234 ssh2
+Aug  4 15:59:09 server1 sshd[2365]: Failed password for root from 88.77.66.55 port 51234 ssh2
+Aug  4 15:59:55 server1 sshd[2370]: Accepted password for admin from 192.168.3.40 port 40211 ssh2
+Aug  4 16:00:12 server1 sshd[2375]: Failed password for root from 194.182.71.5 port 53001 ssh2
+Aug  4 16:00:16 server1 sshd[2375]: Failed password for root from 194.182.71.5 port 53001 ssh2
+Aug  4 16:00:20 server1 sshd[2375]: Failed password for root from 194.182.71.5 port 53001 ssh2
+Aug  4 16:01:02 server1 su[2380]: (to root) eve on pts/7
+Aug  4 16:01:03 server1 su[2380]: pam_unix(su:session): session opened for user root by eve(uid=1003)
+Aug  4 16:01:35 server1 sshd[2385]: Accepted password for charlie from 192.168.10.15 port 45111 ssh2
+Aug  4 16:02:14 server1 sudo:     grace : TTY=pts/8 ; PWD=/home/grace ; USER=root ; COMMAND=/usr/bin/systemctl status ssh
+Aug  4 16:02:50 server1 sshd[2390]: Failed password for invalid user guest from 210.55.77.88 port 54010 ssh2
+Aug  4 16:02:51 server1 sshd[2390]: Failed password for invalid user guest from 210.55.77.88 port 54010 ssh2
+Aug  4 16:02:53 server1 sshd[2390]: Failed password for invalid user guest from 210.55.77.88 port 54010 ssh2
+Aug  4 16:03:27 server1 sshd[2395]: Accepted publickey for heidi from 192.168.5.25 port 47612 ssh2: RSA SHA256:ZZZ111
+Aug  4 16:04:05 server1 crontab[2400]: (mallory) DELETE (mallory)
+Aug  4 16:04:37 server1 sshd[2405]: Failed password for root from 31.13.59.200 port 50123 ssh2
+Aug  4 16:04:41 server1 sshd[2405]: Failed password for root from 31.13.59.200 port 50123 ssh2
+Aug  4 16:04:46 server1 sshd[2405]: Failed password for root from 31.13.59.200 port 50123 ssh2
+Aug  4 16:05:19 server1 sudo:     testuser : TTY=pts/9 ; PWD=/tmp ; USER=root ; COMMAND=/bin/rm -rf /tmp/*
+Aug  4 16:05:59 server1 sshd[2410]: Accepted password for oscar from 192.168.100.10 port 42345 ssh2
+Aug  4 16:06:33 server1 sshd[2415]: Failed password for root from 66.249.66.1 port 55021 ssh2
+Aug  4 16:06:37 server1 sshd[2415]: Failed password for root from 66.249.66.1 port 55021 ssh2
+Aug  4 16:06:41 server1 sshd[2415]: Failed password for root from 66.249.66.1 port 55021 ssh2
+Aug  4 16:07:12 server1 vsftpd[2420]: CONNECT: Client "203.0.113.55"
+Aug  4 16:07:15 server1 vsftpd[2420]: FAIL LOGIN: Client "203.0.113.55", User "anonymous"
+Aug  4 16:07:16 server1 vsftpd[2420]: FAIL LOGIN: Client "203.0.113.55", User "admin"
+Aug  4 16:07:18 server1 vsftpd[2420]: LOGIN OK: Client "203.0.113.55", User "guest"
+Aug  4 16:08:02 server1 su[2430]: (to root) mallory on pts/4
+Aug  4 16:08:04 server1 su[2430]: pam_unix(su:session): session opened for user root by mallory(uid=1004)
+Aug  4 16:08:37 server1 sudo:     oscar : TTY=pts/11 ; PWD=/var/www ; USER=root ; COMMAND=/usr/bin/apt install htop
+Aug  4 16:09:10 server1 sshd[2435]: Failed password for root from 95.142.92.200 port 49221 ssh2
+Aug  4 16:09:14 server1 sshd[2435]: Failed password for root from 95.142.92.200 port 49221 ssh2
+Aug  4 16:09:17 server1 sshd[2435]: Failed password for root from 95.142.92.200 port 49221 ssh2
+Aug  4 16:09:51 server1 systemd[1]: Starting Daily apt download activities...
+Aug  4 16:09:52 server1 systemd[1]: Finished Daily apt download activities.
+Aug  4 16:10:23 server1 nginx[2440]: 192.168.1.55 - - [04/Aug/2025:16:10:23 +0000] "GET /admin HTTP/1.1" 403 150
+Aug  4 16:10:41 server1 sshd[2445]: Accepted password for alice from 172.16.0.99 port 44521 ssh2
+Aug  4 16:11:15 server1 crontab[2450]: (root) REPLACE (root)
+Aug  4 16:11:33 server1 sshd[2455]: Failed password for root from 89.248.165.12 port 51511 ssh2
+Aug  4 16:11:35 server1 sshd[2455]: Failed password for root from 89.248.165.12 port 51511 ssh2
+Aug  4 16:11:38 server1 sshd[2455]: Failed password for root from 89.248.165.12 port 51511 ssh2
+Aug  4 16:12:02 server1 sudo:     frank : TTY=pts/12 ; PWD=/home/frank ; USER=root ; COMMAND=/usr/sbin/service apache2 restart
+Aug  4 16:12:41 server1 sshd[2460]: Accepted publickey for bob from 10.1.1.5 port 49412 ssh2: RSA SHA256:XYZ123
+Aug  4 16:13:05 server1 sshd[2465]: Failed password for invalid user test from 203.0.113.90 port 50012 ssh2
+Aug  4 16:13:08 server1 sshd[2465]: Failed password for invalid user test from 203.0.113.90 port 50012 ssh2
+Aug  4 16:13:11 server1 sshd[2465]: Failed password for invalid user test from 203.0.113.90 port 50012 ssh2
+Aug  4 16:13:45 server1 sudo:     charlie : TTY=pts/2 ; PWD=/etc/nginx ; USER=root ; COMMAND=/usr/bin/nano nginx.conf
+Aug  4 16:14:12 server1 su[2470]: (to root) alice on pts/6
+Aug  4 16:14:13 server1 su[2470]: pam_unix(su:session): session opened for user root by alice(uid=1002)
+Aug  4 16:14:40 server1 sshd[2475]: Accepted password for eve from 192.168.2.45 port 41222 ssh2
+Aug  4 16:15:03 server1 sshd[2477]: Failed password for root from 66.249.66.1 port 49115 ssh2
+Aug  4 16:15:07 server1 sshd[2477]: Failed password for root from 66.249.66.1 port 49115 ssh2
+Aug  4 16:15:10 server1 sshd[2477]: Failed password for root from 66.249.66.1 port 49115 ssh2
+Aug  4 16:15:42 server1 crontab[2480]: (bob) DELETE (bob)
+Aug  4 16:16:01 server1 sudo:     mallory : TTY=pts/8 ; PWD=/var/log ; USER=root ; COMMAND=/bin/systemctl restart ssh
+Aug  4 16:16:33 server1 nginx[2482]: 10.0.1.45 - - [04/Aug/2025:16:16:33 +0000] "POST /login HTTP/1.1" 200 512
+Aug  4 16:17:14 server1 sshd[2485]: Accepted publickey for david from 192.168.10.15 port 42310 ssh2: RSA SHA256:ABC987
+Aug  4 16:17:40 server1 sshd[2487]: Failed password for root from 185.220.101.5 port 50055 ssh2
+Aug  4 16:17:43 server1 sshd[2487]: Failed password for root from 185.220.101.5 port 50055 ssh2
+Aug  4 16:17:45 server1 sshd[2487]: Failed password for root from 185.220.101.5 port 50055 ssh2
+Aug  4 16:18:22 server1 systemd[1]: Starting Daily backup script...
+Aug  4 16:18:25 server1 systemd[1]: Finished Daily backup script.
+Aug  4 22:17:40 server1 sshd[2487]: Failed password for root from 185.220.101.5 port 50055 ssh2
+Aug  4 22:17:43 server1 sshd[2487]: Failed password for root from 185.220.101.5 port 50055 ssh2
+Aug  4 22:17:45 server1 sshd[2487]: Failed password for root from 185.220.101.5 port 50055 ssh2
+Aug  4 23:18:22 server1 systemd[1]: Starting Daily backup script...
+Aug  4 23:18:25 server1 systemd[1]: Finished Daily backup script.
+
