@@ -1,84 +1,30 @@
 import os
 import json
-from collections import defaultdict
 from src.parsers.parser_auth import parse_log_line_auth
-from src.rules.rules_auth import classify_auth_log, failed_attempts, BRUTE_FORCE_THRESHOLD
-from geo_api import get_geolocation
-from email_notification import send_alert_report, send_analysis_report_auth
+from src.rules.rules_auth import classify_auth_log, suspicious_events, list_of_ips
 
 os.chdir(os.path.dirname(__file__))
 
-def extract_hour_from_log(log_entry):
-    time = log_entry['time']
-    hour = int(time.split(':')[0])
-    return hour
-
-suspicious_hours = [22, 23, 0, 1, 2, 3, 4, 5]
-
-def is_suspicious_hour(hour):
-    return hour in suspicious_hours
-
-def analyze_auth_log(log_path):
-
-    suspicious_entries = []
-
-    with open (log_path, "r") as file:
+def analyze_auth_log(auth_path):
+    with open (auth_path, "r") as file:
         for line in file:
-            log_entry_auth = parse_log_line_auth(line)
+            auth_log_parsed = parse_log_line_auth(line)
+            classify_auth_log(auth_log_parsed)
+    
+        for log in suspicious_events:
+            print(log)
 
-            ip = log_entry_auth['ip']
+        print(f"\nFound {len(suspicious_events)} events. Saved to suspicious_events_auth.json")
 
-            geo_data = get_geolocation(ip)
+        sorted_list_of_ips = dict(sorted(list_of_ips.items(), key=lambda item: item[1], reverse=True))
 
-            if geo_data:
-                log_entry_auth['country'] = geo_data.get('country', 'N/A')
-                log_entry_auth['region'] = geo_data.get('region', 'N/A')
-                log_entry_auth['city'] = geo_data.get('city', 'N/A')
-                log_entry_auth['timezone'] = geo_data.get('timezone', 'N/A')
-            else:
-                log_entry_auth['country'] = 'Unknown'
-                log_entry_auth['region'] = 'Unknown'
-                log_entry_auth['city'] = 'Unknown'
-                log_entry_auth['timezone'] = 'Unknown'
+        suspicious_events.append(sorted_list_of_ips)
 
+        print(f"Here's a ranking of suspicious ips with sums of their attempts to login:\n{sorted_list_of_ips}")
 
-            classification = classify_auth_log(line)
-            log_entry_auth['classification'] = classification
-            alert = ""
+        with open("../../results/suspicious_events_auth.json", "w") as f:
+            json.dump(suspicious_events, f, indent=2)
 
-            timestamp = log_entry_auth['timestamp']
-            user = log_entry_auth['user']
-            country = log_entry_auth['country']
-            region = log_entry_auth['region']
-            city = log_entry_auth['city']
-            timezone = log_entry_auth['timezone']
+        print("The list was added to the 'suspicious_events_auth.json' at the end - as a summary")
 
-            print(f"[{classification}] Time: {timestamp}, IP: {ip}, User: {user}, Country: {country}, Region: {region}, City: {city}, Timezone: {timezone}")
-
-            if classification == "FAILED_LOGIN" and ip != "N/A":
-                failed_attempts[ip] += 1
-                if failed_attempts[ip] == BRUTE_FORCE_THRESHOLD:
-                    alert = f"BRUTE FORCE DETECTED from {ip} after {BRUTE_FORCE_THRESHOLD} failed attempts"
-                    print(f"!!! {alert}")
-                    send_alert_report()
-                    suspicious_entries.append(log_entry_auth)
-
-            if classification == "SUCCESSFUL_LOGIN" or classification == "SUDO_USAGE":
-                hour = extract_hour_from_log(log_entry_auth)
-                if is_suspicious_hour(hour):
-                    alert = f"Suspicious activity detected at: {timestamp} (Time: {hour} [in hours])"
-                    print(f"!!! {alert}")
-                    log_entry_auth['alert'] = alert
-                    suspicious_entries.append(log_entry_auth)
-
-#            if classification != "NORMAL":
-#                suspicious_entries.append(log_entry_auth)
-
-    with open("../../results/suspicious_entries_auth.json", "w") as f:
-        json.dump(suspicious_entries, f, indent=2)
-
-    print(f"\nFound {len(suspicious_entries)} entries. Saved to suspicious_entries_auth.json")
-
-    send_analysis_report_auth(suspicious_entries)
-
-    return suspicious_entries
+    return suspicious_events
