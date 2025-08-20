@@ -6,7 +6,7 @@ path_pattern = r'\"(GET|POST|PUT|DELETE|PATCH|OPTIONS|HEAD) (.*?) HTTP/'
 status_pattern = r'"\s(\d{3})\s'
 user_agent_pattern = r'"[^"]*"$'
 
-def parse_log_line(line):
+def parse_log_line_access(line):
     ip_match = re.search(ip_pattern, line)
     date_match = re.search(date_pattern, line)
     path_match = re.search(path_pattern, line)
@@ -20,11 +20,18 @@ def parse_log_line(line):
     status_code = status_match.group(1) if status_match else "N/A"
     user_agent = user_agent_match.group().strip('"') if user_agent_match else "N/A"
 
-    return {
-        "user_agent": user_agent,
-        "path": path,
-        "method": method,
-        "status": status_code,
+    access_log_parsed = {
+        "severity": "info",
+        "severity_reason": "N/A",
+        "rule_id": "N/A",
         "ip": ip,
+        "status": status_code,
+        "404/401/403_attempts": "N/A",
+        "method": method,
+        "path": path,
+        "user_agent": user_agent,
         "date": date,
+        "raw": line
     }
+
+    return access_log_parsed
