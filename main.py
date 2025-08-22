@@ -8,12 +8,12 @@ import xmltodict
 log_type = input("Choose log type (access/auth/evtx/sys): ")
 
 if log_type == "access":
-    try:
-        analyze_access_log("../../test_logs/apache_shady.log")
-    except FileNotFoundError:
-        print("The specified file was not found.")
-    except Exception as e:
-        print(f"An error occured: {e}")
+#    try:
+        analyze_access_log("../../test_logs/access.log")
+#    except FileNotFoundError:
+#        print("The specified file was not found.")
+#    except Exception as e:
+#        print(f"An error occured: {e}")
 elif log_type == "auth":
     try:
         analyze_auth_log("../../test_logs/auth.log")
