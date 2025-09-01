@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from collections import defaultdict, deque
 
 WINDOW = timedelta(minutes=10)
@@ -39,12 +39,33 @@ def parse_evtx_ts(ts):
     if isinstance(ts, datetime):
         return ts
     s = str(ts).strip()
-    for fmt in ("%Y-%m-%dT%H:%M:%S.%fZ", "%Y-%m-%dT%H:%M:%SZ", "%Y-%m-%d %H:%M:%S"):
+    s = s.replace("T", " ")
+    if s.endswith("Z"):
+        s = s[:-1] + "+00:00"
+
+    
+    try:
+        return datetime.fromisoformat(s)
+    except Exception:
+        pass
+
+    for fmt in (
+        "%Y-%m-%dT%H:%M:%S.%fz", 
+        "%Y-%m-%dT%H:%M:%S%z", 
+        "%Y-%m-%d %H:%M:%S.%f",
+        "%Y-%m-%d %H:%M:%S"
+    ):
         try:
-            return datetime.strptime(s, fmt)
+            dt = datetime.strptime(s, fmt)
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=timezone.utc)
+            return dt
         except Exception:
             continue
     return None
+
+def low(x):
+    return str(x).lower() if x is not None else ""
 
 def push_and_prune(dq: deque, now_dt: datetime, window: timedelta = WINDOW):
     if now_dt is None:
@@ -91,9 +112,11 @@ def add_mitre_id(e, mitres):
 
 def extract_src(ev: dict):
     ip = ev.get("IpAddress") or ev.get("SourceNetworkAddress")
-    if ip and ip not in ("-", "N/A", "::1", "127.0.0.1"):
+    if ip and ip not in ("-", "N/A", "::1"):
         return ip
-    ws = ev.get("WorkstationName") or ev.get("ComputerName")
+    ws = ev.get("WorkstationName") 
+    if not ws or ws in ("-", "N/A"):
+        ws = ev.get("ComputerName")
     return ws or "N/A"
 
 def classify_evtx_event(ev: dict):
@@ -121,9 +144,9 @@ def classify_evtx_event(ev: dict):
         c1 = push_and_prune(fail_by_src[src], now_dt)
         c2 = push_and_prune(fail_by_src_user[(src, user)], now_dt)
 
-        status = (ev.get("Status") or "").lower()
+        status = low(ev.get("Status"))
 
-        if status in ("0xc000006a", "0xc0000064", "0xc0000234"):
+        if status in ("0xc000006d", "0xc000006a", "0xc0000064", "0xc0000234"):
             add_severity_reason(ev, [f"failed logon status={status}"])
 
         if c2 > 3:
@@ -146,7 +169,6 @@ def classify_evtx_event(ev: dict):
             add_severity_reason(ev, [f"new source for user: {user} <- {src} (LT={logon_type})"])
             add_mitre_id(ev, ["T1078"])
             append_once()
-
         last_logon[user] = (now_dt, src, logon_type)
 
     if eid == 4672:
@@ -158,6 +180,88 @@ def classify_evtx_event(ev: dict):
                 add_severity_reason(ev, [f"4672 after 4624 within {SHORT_WINDOW.seconds//60}m (src={last_src}, LT={last_lt})"])
                 add_mitre_id(ev, ["T1078"])
                 append_once()
+
+    if eid == 4771:
+        kstatus = low(ev.get("FailureCode") or ev.get("Status"))
+        c1 = push_and_prune(krb_fail_by_src[src], now_dt)
+        c2 = push_and_prune(krb_fail_by_src_user[(src, user)], now_dt)
+
+        if kstatus:
+            add_severity_reason(ev, [f"4771 failure={kstatus}"])
+
+        if c2 > 3:
+            higher_severity(ev)
+            add_severity_reason(ev, [f"4771 burst per (src, user) 10m: {c2}"])
+            add_mitre_id(ev, ["T1110"])
+            append_once()
+        if c1 > 6:
+            higher_severity(ev)
+            add_severity_reason(ev, [f"4771 burst per src 10m: {c1}"])
+            add_mitre_id(ev, ["T1110"])
+            append_once()
+
+    if eid == 4768:
+        pair = (src, "krb_tgt")
+        if pair not in known_krb_sources[user]:
+            known_krb_sources[user].add(pair)
+            higher_severity(ev)
+            add_severity_reason(ev, [f"new Kerberos TGT source for user: {user} <- {src}"])
+            add_mitre_id(ev, ["T1078"])
+            append_once()
+
+    if eid == 4776:
+        ws = ev.get("Workstation") or ev.get("WorkstationName") or src
+        nstatus = low(ev.get("Status") or ev.get("ErrorCode"))
+
+        c = push_and_prune(ntlm_fail_by_ws_user[(ws, user)], now_dt)
+        if nstatus in ("0xc000006a", "0xc0000064", "0xc0000234"):
+            add_severity_reason(ev, [f"4776 status={nstatus}"])
+
+        if c > 3:
+            higher_severity(ev)
+            add_severity_reason(ev, [f"4776 burst per (workstation,user) 10m: {c}"])
+            add_mitre_id(ev, ["T1110"])
+            append_once()
+
+        pair = (ws, "ntlm")
+        if pair not in known_ntlm_workstations[user]:
+            known_ntlm_workstations[user].add(pair)
+            higher_severity(ev)
+            add_severity_reason(ev, [f"new workstation for user (NTLM): {user} <- {ws}"])
+            add_mitre_id(ev, ["T1078"])
+            append_once()
+
+    if eid == 4740:
+        higher_severity(ev)
+        higher_severity(ev)
+        add_severity_reason(ev, ["account locked out"])
+        add_mitre_id(ev, ["T1110"])
+        append_once()
+
+    if eid in (5140, 5145):
+        share = low(ev.get("ShareName"))
+        target = low(ev.get("RelativeTargetName") or "")
+        subj = ev.get("SubjectUserName") or user
+
+        hit = False
+        for s in SENSITIVE_SHARES:
+            if share.endswith(s) or target.endswith(s):
+                hit = True
+                break
+
+        if hit:
+            higher_severity(ev)
+            add_severity_reason(ev, [f"SMB admin share access: {share or target}"])
+            add_mitre_id(ev, ["T1021.002"])
+            append_once()
+
+        pair = (src, "smb")
+        if pair not in known_smb_sources[subj]:
+            known_smb_sources[subj].add(pair)
+            higher_severity(ev)
+            add_severity_reason(ev, [f"new SMB source for user: {subj} <- {src}"])
+            add_mitre_id(ev, ["T1021.002"])
+            append_once()
 
     if eid == 4720:
         higher_severity(ev)
@@ -182,7 +286,8 @@ def classify_evtx_event(ev: dict):
     if eid == 7045:
         binpath = (ev.get("ServiceFileName") or ev.get("ImagePath") or "").lower()
         higher_severity(ev)
-        add_severity_reason(ev, [f"new service: {ev.get('Service Name', 'N/A')}"])
+        svc_name = ev.get("ServiceName") or ev.get("Service Name") or "N/A"
+        add_severity_reason(ev, [f"new service: {svc_name}"])
         add_mitre_id(ev, ["T1543.003"])
         if any(x in binpath for x in ("\\appdata\\", "\\temp\\", "\\users\\", "\\programdata\\")) or binpath.endswith(".exe") is False:
             higher_severity(ev)
