@@ -1,46 +1,27 @@
 # LogSniper
 
-**LogSniper** is a lightweight security log parser built to detect and classify potential threats in system and web logs - such as failed logins, brute-force attempts, suspicious HTTP scanning, and privilege escalations.
+**⚠️ WIP / AI-assisted**
 
-## Project Goal
+I built the core (parsing, the severity ladder, MITRE tagging, and the initial rules) myself. I drafted additional detections with the help of AI and am **currently validating and tuning them**. This release prioritizes a stable core and testable JSON outputs; the optional modules (geo, email alerts, dashboard) are **disabled by default**.
 
-The primary objective of **LogSniper** is to provide a practical tool to enhance cybersecurity by parsing and analyzing system and web logs for potential security threats. This tool lays the foundation for the following:
+**LogSniper** is a lightweight security log parser that detects and classifies suspicious activity across Linux auth/sys logs, web access logs, and Windows EVTX (Security). It focuses on **clear, explainable rules**, sliding-window correlation, and a simple JSON output you can inspect or post-process.
 
-- **Building a Blue Team / SOC toolset**
-- Future expansion into a **lightweight SIEM** or a **honeypot**
-- **Threat hunting** by identifying security events like failed logins, suspicious scanning, and privilege escalation
+## What’s in this release (core-only)
 
-## What's New
+This version prioritizes a **stable, testable core**: parsing + detections + JSON results.
+Optional modules (Geolocation, Email alerts, Streamlit dashboard) **exist in the repo** but are **not wired into the default pipeline** (details below).
 
-**v0.6 - Syslogs**
+Note: Several newer detection rules were drafted with AI assistance and are being validated; thresholds/allowlists may change.
 
-- **Syslogs** are now available to analyze as well. (They have severity levels working as well, but it's still WIP)
+## Supported inputs
 
-**v0.5 – Interactive IP Geolocation Map & Lat/Lon enrichment**
+- **Web access logs** (e.g., Apache/Nginx combined)
 
-- **IP Geolocation Map Visualization**: The results dashboard (charts_app.py) now displays log event locations on an interactive world map (OpenStreetMap, no API key required) using Folium. This lets you instantly see where suspicious activity is coming from.
+- **Linux auth logs** (e.g., auth.log)
 
-- **Latitude/Longitude in Geolocation**: The geolocation enrichment (in geo_api.py) now includes latitude and longitude coordinates for every public IP. This allows for precise mapping and spatial analysis of threat sources.
+- **Windows Security EVTX** (selected Event IDs)
 
-**v0.4 – Results Visualization Dashboard (Streamlit)**
-
-- **Interactive dashboard for log analysis**: You can now visualize and filter your analysis results using an interactive Streamlit app (charts_app.py).
-
-- **Supports all log types**: Works for results from auth.log, access.log, and EVTX files.
-
-**v0.3 – Email Notifications & Improved Reporting**
-
-- **Brute Force Alert**: The tool now sends an email notification when a brute-force attack is detected.
-
-- **Analysis Report Email**: After completing the log analysis, an email will be sent with the results of the analysis.
-
-- **Email Setup**: To use email notifications, the user must create a .env file with their email credentials.
-
-**v0.2 – Geolocation & API request limiting**
-
-- **Automatic IP geolocation** for all log types (access, auth, evtx): Each detected event is enriched with country, region, city, and timezone using ip-api.com.
-
-- **API limit awareness**: Geolocation requests are throttled to 40 per minute (in line with the API provider's fair usage policy). If the script reaches this limit, it will automatically pause and resume when allowed.
+- **Linux syslog**: (kernel, sudo, cron, systemd)
 
 ## How to Use
 
@@ -53,13 +34,7 @@ pip install -r requirements.txt
 ```bash
 python main.py
 ```
-Upon running, the program will prompt you to choose which log type to analyze:
-
-auth — to parse authentication logs (e.g., auth.log)
-
-access — to parse web server access logs (e.g., access.log)
-
-evtx — to parse Windows Event Logs (e.g., Security.evtx)
+Choose: access | auth | evtx | syslog
 
 3. **Results**:
 
@@ -124,54 +99,119 @@ This ensures that any new detection rules or parser updates are properly validat
 
 ### System Log Events (auth.log)
 
-| Event Type            | Description                                                                               |
-| --------------------- | ----------------------------------------------------------------------------------------- |
-| FAILED\_LOGIN         | Failed login attempt                                                                      |
-| BRUTE\_FORCE\_ATTEMPT | 10 failed logins from same IP                                                             |
-| SUDO\_USAGE           | Use of administrative privileges (sudo)                                                   |
-| SUCCESSFUL\_LOGIN     | Successful login                                                                          |
-| SUSPICIOUS\_HOURS     | Activity (successful login or sudo usage) occurring during suspicious hours (22:00–05:00) |
+- **Failed password** bursts per IP (10m: >2, >4, >9). → T1110
+
+- **High auth rate** (10m). → T1595, T1498.001
+
+- **Targeted user** brute per IP+user (>4). → T1110
+
+- **Accepted password after recent burst** (possible success after brute). → T1110, T1078
+
+- **Invalid user** bursts; **root** attempts/success. → T1087.001, T1078
+
+- Context: **outside allowlist** subnets tag. → T1021.004
 
 ### Web Log Events (access.log)
 
-| Event Type                           | Description                                          |
-| ------------------------------------ | ---------------------------------------------------- |
-| SQLMAP\_SCANNER                      | User-Agent contains `sqlmap`                         |
-| CURL\_SCANNER                        | User-Agent is `curl`, indicating automation          |
-| NIKTO\_SCANNER                       | Known Nikto scan pattern                             |
-| STRANGE\_METHOD                      | Suspicious HTTP method (e.g., OPTIONS, HEAD, DELETE) |
-| POTENTIAL\_BRUTEFORCE                | Repeated 403s to `/login`                            |
-| POTENTIAL\_404\_FLOOD                | 20+ 404s from same IP                                |
-| POTENTIAL\_SCAN                      | Multiple IPs probing same path                       |
-| POTENTIAL\_SETUP\_CGI\_SCANNER       | Access to `setup.cgi`                                |
-| POTENTIAL\_CONFIG\_PHP\_SCANNER      | Access to `config.php`                               |
-| POTENTIAL\_SUSPICIOUS\_PATH\_SCANNER | Access to `/hidden` or similar paths                 |
+- **Auth endpoints**: 401/403 bursts per IP (10m), login brute at /login, /xmlrpc.php, etc. → T1110
+
+- **High request-rate per IP** (10m). → T1595, T1498.001
+
+- **404/403 enumeration**: many unique not-found paths (10m) and large error bursts. → T1595.001
+
+- **Path/payload patterns**:
+
+    - **SQLi** in query. → T1190
+
+    - **Command injection** patterns in path/query. → T1059
+
+    - **Traversal/LFI, secrets** (/.env, /.git, /config.php), **cloud metadata, JNDI, Spring/WordPress probes**. → T1190 / T1595 (as applicable)
+
+- **UA anomalies**: curl, python-requests, sqlmap, nikto. → T1595, T1036.005
+
+- **Dangerous/rare methods** (TRACE/PUT/DELETE/…); if **2xx**, escalate.
 
 ### Windows Event Logs (EVTX)
 
-| Event Type                                | Description                                                                                  | MITRE ATT&CK ID |
-| ----------------------------------------- | -------------------------------------------------------------------------------------------- | ---------------- |
-| BRUTE_FORCE_FAILED_LOGINS                 | 3+ failed login attempts (4625/5379) from same IP/account within 60 seconds                  | T1110            |
-| CREATE_OR_MODIFY_SYSTEM_PROCESS           | Creation or modification of a Windows service (4697/7045) in unusual paths (e.g., AppData)   | T1543.003        |
-| ABUSE_ELEVATION_CONTROL_MECHANISM         | Suspicious process creation (4688) involving `cmd.exe`, `services.exe`, or `rundll32.exe` with specific arguments (e.g., `echo`, `\\pipe\\`, `,a /p:`) | T1548            |
+- **Brute-force / credential abuse**
 
-## Geolocation Enrichment
+    - **4625** Failed logon bursts per **source** and per **(source,user)**. → T1110
 
-Every log entry is enriched with:
+    - **4771** Kerberos pre-auth failures (per source / per (source,user)). → T1110
 
-- country
+    - **4776** NTLM failures (per (workstation,user)). → T1110
 
-- region
+- **Suspicious new sources / lateral movement hints**
 
-- city
+    - **4624** Successful logon (type 3/10): **first-seen source** per user. → T1078
 
-- timezone
+    - **4768** New Kerberos TGT source per user. → T1078
 
-- latitude
+    - **5140/5145** SMB admin share access (ADMIN$, C$, IPC$) + **new SMB source** per user. → T1021.002
 
-- longitude
+- **Privilege & account changes**
 
-Geolocation is performed via ip-api.com (up to 40 requests/minute per their policy). If an IP can't be geolocated (e.g., private IP or rate limit hit), relevant fields will be set as "Unknown".
+    - **4672** Special privileges **shortly after** 4624 (tight window). → T1078
+
+    - **4720/4726** User created / deleted. → T1136, T1098
+
+    - **4732** Added to privileged group (Domain Admins, Administrators, etc.). → T1098
+
+- **Persistence / execution**
+
+    - **7045** New service created (flags suspicious paths like AppData, Temp, ProgramData). → T1543.003
+
+    - **4698** Scheduled task created (flags actions: powershell, cmd.exe, wscript, etc.). → T1053.005
+
+- **Defense evasion**
+
+    - **4719** Audit policy changed → T1562
+
+    - **1102** Security log cleared → T1562 (auto-CRITICAL)
+
+### Syslog
+
+- **kernel (UFW/NFLOG)**
+
+    - Burst per **SRC** in 10m window (>10, >25). → T1595.002
+
+    - **Port scan** hint: many **unique DPT** per SRC in 10m (>7). → T1595.002
+
+    - **Sensitive ports** focus (22/23/139/445/3389/5900/3306) per (src,dpt) (>5,>15). → T1595.001
+
+    - Context: mark **external source** (non-RFC1918) once per window.
+
+- **cron**
+
+    - Suspicious command content/path (e.g., curl/wget, shell, /tmp, /dev/shm). → T1053.003 (+ T1105 if exfil/transfer hints)
+
+    - **New cron user** (first-seen per host). → T1053.003
+
+    - **Burst** of same user+cmd in 10m (>5, >15). → T1053.003
+
+- **systemd**
+
+    - **Failed** events per unit (repeated in 10m). → T1569.002
+
+    - **Flapping**: many events per unit in short window (2m). → T1569.002, T1543.002
+
+    - **New unit** started (first-seen per host), suspicious paths/names (e.g., /tmp/). → T1543.002
+
+    - **Start/stop storms** in 10m (>=8). → T1543.002
+
+- sudo
+
+    - **First sudo** for a user (per repo runtime). → T1548.003
+
+    - **Burst** per user in 10m (>3, >7). → T1548.003
+
+    - **Many unique sudo commands** in 10m (>5). → T1548.003
+
+    - **Sensitive commands** (e.g., systemctl, chmod/chown, useradd, tcpdump, curl/wget/...). → T1548.003
+
+    - **Shell/interpreters** via sudo (bash, python, …). → T1059
+
+    - **Non-interactive sudo** or **pam_unix auth failures** bursts. → T1548, T1110
 
 ## Project Structure
 ```bash
@@ -200,14 +240,18 @@ Parsed into:
 - MITRE ATT&CK
 - Sigma Rules
 - GTFOBins
-- Blue Team Cheat Sheet
-- TryHackMe / Hack The Box Labs
 
 ## Author
 
 Bartłomiej Biskupiak
 
 This is part of my blue team / cybersecurity learning path.
+
+## How this was built (short note)
+
+- I wrote the **project structure, parsers, severity escalation, MITRE tagging**, and the initial rules.  
+- I used **AI as a drafting assistant** to explore additional detections and refactors.  
+- I’m now **validating and tuning each rule** (thresholds, allowlists, FP control) and will re-enable optional modules once the detection core is stable.
 
 ## Project Status
 
@@ -229,9 +273,11 @@ This is part of my blue team / cybersecurity learning path.
 
 - Sys log analysis - **DONE**
 
-- Severity levels of events - **In progress, done just for syslog**
+- Severity levels of events - **DONE**
 
-- Advanced detection rules - **In progress**
+- Advanced detection rules - **DONE but will add more**
+
+- Re-enable Geo/IP map + email alerts + dashboard after rule hardening - **In progress**
 
 - SQLite or Elastic integration (optional, later)
 
