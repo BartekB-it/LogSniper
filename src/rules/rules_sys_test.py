@@ -1,3 +1,4 @@
+# src/rules/rules_sys_test.py
 from collections import deque, defaultdict
 from datetime import datetime, timedelta
 import re
@@ -7,7 +8,7 @@ suspicious_events = []
 WINDOW = timedelta(minutes=10)
 SHORT_WINDOW = timedelta(minutes=2)
 
-#kernel
+# kernel
 ufw_window_by_src = defaultdict(deque)
 unique_dpt_by_src = defaultdict(deque)
 sensitive_port_hits = defaultdict(deque)
@@ -15,8 +16,7 @@ external_src_last_noted = {}
 
 SENSITIVE_PORTS = {"22", "23", "139", "445", "3389", "5900", "3306"}
 
-#cron
-
+# cron
 known_cron_users = set()
 cron_burst = defaultdict(deque)
 CRON_SUS_WORDS = (
@@ -25,12 +25,13 @@ CRON_SUS_WORDS = (
 )
 CRON_SUS_PATH_HINTS = ("/tmp/", "/var/tmp/", "/dev/shm/", "/.", "/.config/")
 
-#systemd
+# systemd
 systemd_window_by_unit = defaultdict(deque)
 systemd_fail = defaultdict(deque)
 systemd_transitions = defaultdict(deque)
+_seen_units = set()  # first-seen units per host
 
-#sudo
+# sudo
 sudo_window_by_user = defaultdict(deque)
 sudo_unique_cmd_by_user = defaultdict(deque)
 known_sudo_users = set()
@@ -41,7 +42,7 @@ SENSITIVE_SUDO_CMDS = (
     "systemctl", "service",
     "chmod", "chown", "chattr", "setcap", "setfacl",
     "mount", "umount",
-    "tcpdump", "namp", "socat", "nc", "ncat", "netcat",
+    "tcpdump", "nmap", "socat", "nc", "ncat", "netcat",  # <- nmap (fix)
     "curl", "wget", "scp", "ssh"
 )
 
@@ -49,18 +50,14 @@ def higher_severity(e):
     if e["severity"] == "CRITICAL":
         return
     elif e["severity"] == "high":
-        e["severity"] = "CRITICAL"
-        return
+        e["severity"] = "CRITICAL"; return
     elif e["severity"] == "mid":
-        e["severity"] = "high"
-        return
+        e["severity"] = "high"; return
     elif e["severity"] == "low":
-        e["severity"] = "mid"
-        return
+        e["severity"] = "mid"; return
     else:
-        e["severity"] = "low"
-        return
-    
+        e["severity"] = "low"; return
+
 def add_severity_reason(e, reason):
     if e["severity_reason"] == "N/A":
         e["severity_reason"] = []
@@ -113,12 +110,14 @@ def extract_unit_from_msg(msg: str) -> str | None:
     return m.group(1) if m else None
 
 def parse_sudo_user_from_msg(msg: str) -> str | None:
-    if not msg: return None
-    m=re.search(r"\s([A-Za-z0-9._-]+)\s:\sTTY=", msg)
+    if not msg:
+        return None
+    m = re.search(r"\s([A-Za-z0-9._-]+)\s:\sTTY=", msg)
     return m.group(1) if m else None
 
 def parse_sudo_cmd_from_msg(msg: str) -> str | None:
-    if not msg: return None
+    if not msg:
+        return None
     m = re.search(r"COMMAND=([^\s;][^\n]*)", msg)
     return m.group(1).strip() if m else None
 
@@ -133,9 +132,11 @@ def parse_user_from_sudo_failure(msg: str) -> str:
     return m.group(1) if m else "N/A"
 
 def analyze_sys_log(e):
-
     ef = e.get("event_family")
     ea = e.get("event_action", {}) or {}
+
+    # UŻYWAJ teraz w KAŻDEJ gałęzi:
+    now_dt = parse_syslog_dt(e.get("timestamp", "Jan  1 00:00:00"))
 
     line_appended = False
     def append_once(ev):
@@ -144,16 +145,14 @@ def analyze_sys_log(e):
             suspicious_events.append(ev)
             line_appended = True
 
+    # -------- kernel --------
     if ef == "kernel":
-
         src = ea.get("src")
         dpt = ea.get("dpt")
         proto = ea.get("proto")
 
         has_all = all(v and v != "N/A" for v in (src, dpt, proto))
         if has_all:
-
-            now_dt = parse_syslog_dt(e["timestamp"])
             count_burst = push_and_prune(ufw_window_by_src[src], now_dt)
 
             if count_burst > 10:
@@ -163,11 +162,10 @@ def analyze_sys_log(e):
                 append_once(e)
             if count_burst > 25:
                 higher_severity(e)
-                add_severity_reason(e, [f"heavy UFW burst per SRC (10m)"])
+                add_severity_reason(e, ["heavy UFW burst per SRC (10m)"])
                 append_once(e)
 
             uniq_ports = push_prune_and_count_unique(unique_dpt_by_src[src], now_dt, dpt)
-
             if uniq_ports > 7:
                 higher_severity(e)
                 add_severity_reason(e, [f"port-scan: {uniq_ports} unique DPT (10m)"])
@@ -186,22 +184,23 @@ def analyze_sys_log(e):
                     add_severity_reason(e, ["heavy focus on sensitive port"])
                     append_once(e)
 
-            if src and not (src.startswith("10.") or src.startswith("192.168.") or src.startswith("172.16.")):
+            if src and not (str(src).startswith("10.") or str(src).startswith("192.168.") or str(src).startswith("172.16.")):
                 last = external_src_last_noted.get(src)
                 if (last is None) or (now_dt and (now_dt - last) >= WINDOW):
                     add_severity_reason(e, [f"external source ({src})"])
                     external_src_last_noted[src] = now_dt
-                    if not line_appended:
-                        append_once(e)
+                    append_once(e)
 
             if count_burst > 10 and uniq_ports > 7:
                 higher_severity(e)
                 add_severity_reason(e, ["combined: burst + unique DPT"])
                 append_once(e)
 
+    # -------- cron --------
     if ef == "cron":
         user = ea.get("cron_user") or "N/A"
         cmd = (ea.get("cron_cmd") or "").strip()
+
         if user != "N/A":
             lower_cmd = cmd.lower()
             sus = any(k in lower_cmd for k in CRON_SUS_WORDS) or any(h in lower_cmd for h in CRON_SUS_PATH_HINTS)
@@ -214,14 +213,15 @@ def analyze_sys_log(e):
                     add_mitre(e, ["T1053.003"])
                 append_once(e)
 
-            key_user = f"{e.get('host', "")}/{user}"
+            # <- TU był błąd w f-stringu (cudzysłowy)
+            key_user = f"{e.get('host', '')}/{user}"
             if key_user not in known_cron_users:
                 known_cron_users.add(key_user)
                 add_severity_reason(e, [f"new cron user: {user}"])
                 add_mitre(e, ["T1053.003"])
                 append_once(e)
-            
-            if cmd: 
+
+            if cmd:
                 n = push_and_prune(cron_burst[(user, cmd)], now_dt)
                 if n > 5:
                     higher_severity(e)
@@ -233,6 +233,7 @@ def analyze_sys_log(e):
                     add_severity_reason(e, ["heavy cron burst (10m)"])
                     append_once(e)
 
+    # -------- systemd --------
     if ef == "systemd":
         unit = ea.get("unit")
         if not unit or unit == "N/A":
@@ -256,17 +257,18 @@ def analyze_sys_log(e):
                 append_once(e)
 
         if unit_norm != "N/A":
-            c_sys = push_and_prune(systemd_window_by_unit[unit], now_dt, window=SHORT_WINDOW)
+            c_sys = push_and_prune(systemd_window_by_unit[unit_norm], now_dt, window=SHORT_WINDOW)
             if c_sys > 3:
                 higher_severity(e)
-                add_severity_reason(e, [f"systemd flapping: {unit} ({c_sys} events/{SHORT_WINDOW.seconds//60}m)"])
+                add_severity_reason(e, [f"systemd flapping: {unit_norm} ({SHORT_WINDOW.seconds//60}m) count={c_sys}"])
                 add_mitre(e, ["T1569.002", "T1543.002"])
                 append_once(e)
 
         if started_flag and unit_norm != "N/A":
             host = e.get("host", "")
             key = f"{host}/{unit_norm}"
-            if not any(key == k for k in systemd_transitions.keys()):
+            if key not in _seen_units:
+                _seen_units.add(key)
                 higher_severity(e)
                 add_severity_reason(e, [f"new systemd unit: {unit_norm}"])
                 add_mitre(e, ["T1543.002"])
@@ -283,21 +285,19 @@ def analyze_sys_log(e):
             if tr >= 8:
                 higher_severity(e)
                 add_severity_reason(e, [f"systemd start/stop: {unit_norm} (10m): {tr}"])
-                add_mitre(e, ["T543.002"])
+                add_mitre(e, ["T1543.002"])  # <- fix z T543.002
                 append_once(e)
 
+    # -------- sudo --------
     if ef == "sudo":
         user = (ea.get("sudo_user") or parse_sudo_user_from_msg(e.get("msg", "")) or "").strip()
         target = (ea.get("sudo_target") or "").strip()
         cmd_full = (ea.get("sudo_cmd") or parse_sudo_cmd_from_msg(e.get("msg", "")) or "").strip()
-        
-        cmd_base = "cmd_full.split("/")[-1].lower() if cmd_full else """
-        if cmd_full:
-            tail = cmd_full.split("/")[-1]
-            cmd_base = tail.split()[0].lower()
+
+        # <- TU był rozbity string / cudzysłowy
+        cmd_base = cmd_full.split("/")[-1].split()[0].lower() if cmd_full else ""
 
         if user and cmd_base:
-
             if user not in known_sudo_users:
                 known_sudo_users.add(user)
                 higher_severity(e)
@@ -313,7 +313,7 @@ def analyze_sys_log(e):
                 append_once(e)
             if cnt > 7:
                 higher_severity(e)
-                add_severity_reason(e, [f"heavy sudo burst per user (10m)"])
+                add_severity_reason(e, ["heavy sudo burst per user (10m)"])
                 append_once(e)
 
             uniq = push_prune_and_count_unique(sudo_unique_cmd_by_user[user], now_dt, cmd_base)
@@ -356,4 +356,3 @@ def analyze_sys_log(e):
                     append_once(e)
 
     return e
-
